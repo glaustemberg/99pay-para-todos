@@ -26,8 +26,8 @@
 html,body{margin:0;height:100%;background:#000;color:#fff;overflow:hidden;font-family:var(--body);-webkit-font-smoothing:antialiased}
 .nc{text-transform:none!important}
 #stage{position:fixed;left:50%;top:50%;width:1920px;height:1080px;transform-origin:50% 50%;overflow:hidden;background:var(--ink)}
-.s{position:absolute;inset:0;overflow:hidden;visibility:hidden;background:var(--ink)}
-.s.on{visibility:visible}
+.s{position:absolute;inset:0;overflow:hidden;display:none;background:var(--ink)}
+.s.on{display:block}
 .bg,.bgv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:50% 50%}
 .sh{position:absolute;inset:0;pointer-events:none}
 .sh-b{background:linear-gradient(180deg,rgba(11,11,12,0) 30%,rgba(11,11,12,.55) 62%,rgba(11,11,12,.95) 100%)}
@@ -325,10 +325,10 @@ table.cf{width:100%;border-collapse:collapse;margin-top:28px;font-family:var(--b
 .solar-s .lead{color:var(--ink);font-weight:700;font-size:40px;max-width:26em}
 .solar-s .lead+.lead{font-weight:500;font-size:30px}
 
-#start{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:9vh;gap:14px;background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,.7));cursor:pointer}
+#start{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:max(22vh,120px);gap:14px;background:transparent;cursor:pointer}
 #start button{all:unset;cursor:pointer;display:flex;align-items:center;gap:12px;background:var(--sun);color:var(--ink);font:800 clamp(16px,1.6vw,22px)/1 var(--body);padding:18px 28px;border-radius:999px;box-shadow:0 12px 40px rgba(0,0,0,.4)}
 #start button:focus-visible{outline:3px solid #fff;outline-offset:4px}
-#start p{margin:0;font:500 clamp(12px,1vw,15px)/1.4 var(--mono);color:#fff;letter-spacing:.06em;text-align:center}
+#start p{margin:0;font:500 clamp(12px,1vw,15px)/1.4 var(--mono);color:#fff;background:rgba(0,0,0,.45);padding:6px 12px;border-radius:999px;letter-spacing:.06em;text-align:center}
 @media (prefers-reduced-motion:reduce){.track{animation:none}.live::before{animation:none}}
 </style>
 </head>
@@ -759,7 +759,7 @@ table.cf{width:100%;border-collapse:collapse;margin-top:28px;font-family:var(--b
 
 <div id="start" role="dialog" aria-label="Iniciar apresentação">
   <button type="button" id="go">▶&nbsp; Apresentar em tela cheia</button>
-  <p>Setas ou clique para avançar · F alterna a tela cheia</p>
+  <p>Clique, toque ou use as setas para avançar</p>
 </div>
 <dialog id="lb"><img id="lbImg" alt=""><p><span id="lbT"></span><a id="lbA" target="_blank" rel="noopener">abrir fonte ↗</a></p><button id="lbX" type="button" aria-label="Fechar">fechar ✕</button></dialog>
 
