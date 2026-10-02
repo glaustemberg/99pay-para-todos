@@ -1,0 +1,900 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Para Todos no Carnaval</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap">
+<style>
+@font-face{font-family:'Poppins';font-weight:400;font-display:block;src:url('assets/fonts/Poppins-Regular.woff2') format('woff2')}
+@font-face{font-family:'Poppins';font-weight:500;font-display:block;src:url('assets/fonts/Poppins-Medium.woff2') format('woff2')}
+@font-face{font-family:'Poppins';font-weight:600;font-display:block;src:url('assets/fonts/Poppins-SemiBold.woff2') format('woff2')}
+@font-face{font-family:'Poppins';font-weight:700;font-display:block;src:url('assets/fonts/Poppins-Bold.woff2') format('woff2')}
+:root{
+  --ink:#0B0B0C;--ink-2:#151517;--ink-3:#202024;--line:#2C2C31;
+  --sun:#FFDD00;--paper:#F4F5F7;--mute:#A3A4AB;--soft:#E4E5EA;
+  --roxo:#5E2E86;--roxo-escuro:#42165C;--laranja:#F79B46;--claro:#E9E7E8;--lilas:#E7DFF5;
+  --display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;
+  --body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  --pop:'Poppins',sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#000;color:#fff;overflow:hidden;font-family:var(--body);-webkit-font-smoothing:antialiased}
+.nc{text-transform:none!important}
+#stage{position:fixed;left:50%;top:50%;width:1920px;height:1080px;transform-origin:50% 50%;overflow:hidden;background:var(--ink)}
+.s{position:absolute;inset:0;overflow:hidden;visibility:hidden;background:var(--ink)}
+.s.on{visibility:visible}
+.bg,.bgv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:50% 50%}
+.sh{position:absolute;inset:0;pointer-events:none}
+.sh-b{background:linear-gradient(180deg,rgba(11,11,12,0) 30%,rgba(11,11,12,.55) 62%,rgba(11,11,12,.95) 100%)}
+.sh-l{background:linear-gradient(90deg,rgba(11,11,12,.92) 0%,rgba(11,11,12,.6) 45%,rgba(11,11,12,0) 80%)}
+.sh-x{background:rgba(11,11,12,.78)}
+.sh-xx{background:rgba(11,11,12,.88)}
+.box{position:absolute;left:120px;right:120px;top:140px;bottom:120px}
+.bl{position:absolute;left:120px;bottom:130px;width:1500px}
+
+/* tipografia */
+.k{display:flex;align-items:center;gap:16px;margin:0 0 26px;font:600 22px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--sun)}
+.k b{background:var(--sun);color:var(--ink);padding:7px 11px 6px;border-radius:6px;letter-spacing:.04em}
+.t{margin:0;font-family:var(--display);font-weight:900;text-transform:uppercase;line-height:.86;letter-spacing:-.005em}
+.t-xl{font-size:236px}.t-l{font-size:176px}.t-m{font-size:124px}.t-s{font-size:96px}
+.m{display:block;overflow:hidden;padding:.16em 0 .04em;margin:-.16em 0 -.04em}
+.m>span{display:block}
+.y{color:var(--sun)}
+.lead{margin:30px 0 0;font:500 34px/1.32 var(--body);color:var(--soft);max-width:30em;text-wrap:pretty}
+.cr{position:absolute;right:28px;bottom:64px;font:500 13px/1 var(--mono);color:rgba(255,255,255,.72);text-shadow:0 1px 6px rgba(0,0,0,.6);z-index:3}
+.src{font:500 17px/1.4 var(--mono);color:var(--mute);margin:0}
+.pill{display:inline-block;font:900 64px/1 var(--display);text-transform:uppercase;background:var(--sun);color:var(--ink);padding:14px 26px 10px;border-radius:14px}
+
+/* chrome */
+#chrome{position:absolute;inset:0;pointer-events:none;z-index:40}
+#brand{position:absolute;left:64px;top:44px;display:flex;align-items:center;gap:16px}
+#brand svg{height:36px;width:auto;fill:#fff}
+#brand svg *{fill:#fff}
+#brand .x{font:500 22px/1 var(--mono);color:var(--mute)}
+#brand img{height:30px}
+#chap{position:absolute;right:52px;top:42px;background:rgba(11,11,12,.55);padding:9px 12px;border-radius:7px;font:600 17px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.8)}
+#bar{position:absolute;left:0;bottom:0;height:6px;width:100%;background:rgba(255,255,255,.12)}
+#bar i{display:block;height:100%;width:0;background:var(--sun);transition:width .8s cubic-bezier(.7,0,.2,1)}
+#count{position:absolute;right:64px;bottom:30px;font:600 18px/1 var(--mono);letter-spacing:.1em;color:rgba(255,255,255,.85)}
+#count b{color:var(--sun)}
+#fs{position:absolute;left:64px;bottom:22px;opacity:0;transition:opacity .4s;pointer-events:auto;cursor:pointer;display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);color:#fff;font:600 15px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:10px 14px;border-radius:999px}
+body.mouse #fs{opacity:1}
+#fs:hover{background:var(--sun);color:var(--ink)}
+body.inst #brand,body.inst #chap,body.inst #count{opacity:0}
+body.inst #bar i{background:var(--laranja)}
+body.solar #chap{background:transparent}body.solar #count b{color:var(--ink)}
+body.solar #brand svg *{fill:var(--ink)}body.solar #brand .x,body.solar #chap,body.solar #count{color:var(--ink)}
+body.solar #brand img{filter:invert(1)}
+#brand,#chap,#count{transition:opacity .4s,color .4s}
+
+/* cortina */
+#curtain{position:absolute;inset:0;z-index:45;display:none;place-items:center;background:var(--sun);color:var(--ink)}
+#curtain.roxo{background:var(--roxo)}
+#curtain b{font:900 420px/.8 var(--display);letter-spacing:-.02em}
+
+/* institucional */
+.inst-s{background:var(--roxo)}
+.nota-legal{position:absolute;left:72px;top:996px;width:1760px;margin:0;font:italic 400 17px/24px var(--pop);color:var(--claro)}
+.encerra-topo{position:absolute;left:0;top:0;width:1920px;height:640px}
+.contato{position:absolute;left:var(--x);top:var(--y);width:var(--w,400px);color:#fff;font-family:var(--pop)}
+.contato b{display:block;margin:0 0 4px;font:700 26px/32px var(--pop);color:var(--laranja)}
+.contato strong{display:block;margin:0 0 6px;font:700 24px/30px var(--pop)}
+.contato p{margin:0;font:400 19px/24px var(--pop)}
+.encerra-divisor{position:absolute;left:1430px;top:690px;width:4px;height:320px;background:repeating-linear-gradient(var(--laranja) 0 4px,transparent 4px 10px)}
+.rede{position:absolute;left:1501px;top:var(--y);display:flex;align-items:center;gap:11px}
+.rede i{position:relative;flex:0 0 auto;width:48px;height:48px;overflow:hidden}
+.rede i img{position:absolute;left:-2px;top:-2px;width:64px;height:53px}
+.rede span{font:700 24px/1 var(--pop);color:#fff}
+.ficha{position:absolute;left:120px;top:150px;width:1060px;font-family:var(--pop)}
+.ficha .kick{margin:0 0 18px;font:600 22px/1 var(--pop);letter-spacing:.14em;text-transform:uppercase;color:var(--laranja)}
+.ficha h2{margin:0 0 22px;font:700 88px/1 var(--pop);color:#fff}
+.barra4{display:flex;width:420px;height:8px;margin:0 0 54px}
+.barra4 i{flex:1}
+.ficha dl{display:grid;grid-template-columns:230px 1fr;gap:16px 28px;margin:0 0 52px}
+.ficha dt{font:600 20px/30px var(--pop);color:var(--lilas);text-transform:uppercase;letter-spacing:.08em}
+.ficha dd{margin:0;font:600 28px/30px var(--pop);color:#fff}
+.ficha .eq{display:grid;grid-template-columns:repeat(2,1fr);gap:22px 48px;margin:0 0 50px}
+.ficha .eq div b{display:block;font:700 28px/1.2 var(--pop);color:#fff}
+.ficha .eq div span{font:400 20px/1.4 var(--pop);color:var(--lilas)}
+.ficha .nt{margin:0 0 10px;font:400 17px/1.45 var(--pop);color:var(--lilas);max-width:62em}
+
+/* abertura */
+.hero .t-xl{font-size:250px}
+.land{display:flex;align-items:center;gap:28px;margin-top:34px}
+.land p{margin:0;font:500 32px/1.3 var(--body);color:var(--soft);max-width:20em}
+
+/* pilares */
+.pil{position:absolute;left:120px;right:120px;top:410px;display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
+.pil article{background:var(--ink-2);border:1px solid var(--line);border-radius:22px;overflow:hidden}
+.pil figure{margin:0;height:300px;position:relative;overflow:hidden}
+.pil figure img{width:100%;height:100%;object-fit:cover}
+.pil figure .cr{font-size:11px;right:12px;bottom:10px}
+.pil div{padding:26px 28px 30px}
+.pil small{display:block;font:600 17px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--sun)}
+.pil strong{display:block;margin:14px 0 10px;font:900 120px/.85 var(--display)}
+.pil span{font:500 21px/1.4 var(--body);color:var(--soft)}
+
+/* números */
+.nums2{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:10px}
+.nums2 div strong{display:block;font:900 290px/.82 var(--display);color:var(--sun)}
+.nums2 div span{display:block;margin-top:24px;font:600 30px/1.3 var(--body);color:#fff;max-width:17em}
+.nums4{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;margin-top:64px;padding-top:40px;border-top:1px solid rgba(255,255,255,.2)}
+.nums4 strong{display:block;font:900 112px/.85 var(--display);white-space:nowrap}
+.nums4 span{display:block;margin-top:12px;font:500 22px/1.35 var(--body);color:var(--soft)}
+.g8{display:grid;grid-template-columns:repeat(4,1fr);gap:46px 40px;margin-top:40px}
+.g8 div{border-top:3px solid var(--sun);padding-top:20px}
+.g8 strong{display:block;font:900 124px/.85 var(--display);white-space:nowrap}
+.g8 span{display:block;margin-top:12px;font:500 23px/1.35 var(--body);color:var(--soft)}
+
+/* ritmos */
+.tri{position:absolute;inset:0;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--ink)}
+.tri figure{margin:0;position:relative;overflow:hidden}
+.tri video{width:100%;height:100%;object-fit:cover}
+.tri figure::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 55%,rgba(0,0,0,.85))}
+.tri figcaption{position:absolute;left:44px;bottom:110px;z-index:2;font:900 108px/.85 var(--display);text-transform:uppercase}
+.tri .cr{bottom:72px;left:46px;right:auto}
+.tri-k{position:absolute;left:64px;top:118px;z-index:4;background:rgba(11,11,12,.72);padding:12px 16px;border-radius:10px}
+
+/* diversidade */
+.div-l{position:absolute;left:120px;top:140px;width:760px}
+.div-l ul{list-style:none;margin:44px 0 0;padding:0;display:grid;gap:20px}
+.div-l li{position:relative;padding-left:34px;font:500 25px/1.38 var(--body);color:var(--soft)}
+.div-l li::before{content:"";position:absolute;left:0;top:12px;width:14px;height:14px;border-radius:50%;background:var(--sun)}
+.div-l li b{color:#fff}
+.mos{position:absolute;right:0;top:0;bottom:0;width:960px;display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(3,1fr);gap:6px}
+.mos figure{margin:0;position:relative;overflow:hidden}
+.mos img{width:100%;height:100%;object-fit:cover}
+.mos .cr{font-size:11px;right:12px;bottom:10px}.mos figure:nth-last-child(-n+2) .cr{bottom:58px}
+
+/* patrocinadores galo */
+.chips{display:flex;flex-wrap:wrap;gap:12px;margin:40px 0 0}
+.chips span{display:inline-flex;align-items:baseline;gap:10px;padding:13px 18px;border-radius:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);font:700 25px/1 var(--body)}
+.chips span small{font:500 15px/1 var(--mono);color:var(--mute);text-transform:uppercase;letter-spacing:.06em}
+.chips span.bank{background:var(--sun);color:var(--ink);border-color:var(--sun)}
+.chips span.bank small{color:#4a4a00}
+.chips.sm span{padding:10px 14px;font-size:20px}
+.chips.sm small{font-size:13px}
+.fit{display:grid;grid-template-columns:1.25fr 1fr;gap:40px;margin-top:46px;align-items:start}
+.fit p{margin:0;font:500 27px/1.42 var(--body);color:var(--soft)}
+.cred{background:var(--ink-2);border:1px solid var(--line);border-left:6px solid var(--sun);border-radius:18px;padding:28px 30px}
+.cred small{display:block;font:600 16px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--sun);margin-bottom:14px}
+.cred p{font:600 27px/1.38 var(--body);color:#fff}
+.cred em{display:block;margin-top:12px;font:500 16px/1 var(--mono);color:var(--mute);font-style:normal}
+
+/* clipping */
+.wall{position:absolute;left:0;right:0;bottom:70px;display:grid;gap:22px}
+.row{overflow:hidden}
+.track{display:flex;gap:22px;width:max-content;animation:mq var(--dur) linear infinite}
+.row.rev .track{animation-direction:reverse}
+@keyframes mq{to{transform:translateX(-50%)}}
+.clip{all:unset;cursor:zoom-in;position:relative;flex:0 0 auto;height:var(--h);border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 10px 30px rgba(0,0,0,.45)}
+.clip img{height:100%;width:auto;display:block}
+.clip .tag3{position:absolute;left:10px;bottom:10px;font:600 13px/1 var(--mono);text-transform:uppercase;letter-spacing:.06em;background:var(--ink);color:#fff;padding:7px 9px;border-radius:6px;max-width:90%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.clip .tag3.post{background:#E1306C}.clip .tag3.video{background:#FF0000}
+.stats{display:grid;grid-template-columns:repeat(4,auto);justify-content:start;gap:64px;margin-top:30px}
+.stats strong{display:block;font:900 104px/.85 var(--display);color:var(--sun);white-space:nowrap}
+.stats span{display:block;margin-top:10px;max-width:15em;font:600 19px/1.3 var(--body);color:var(--soft)}
+dialog#lb{border:0;padding:0;background:transparent;max-width:92vw;max-height:92vh}
+dialog#lb::backdrop{background:rgba(0,0,0,.86)}
+dialog#lb img{display:block;max-width:90vw;max-height:80vh;border-radius:10px}
+dialog#lb p{display:flex;justify-content:space-between;gap:20px;margin:12px 0 0;font:600 15px/1.3 var(--mono);color:#fff}
+dialog#lb a{color:var(--sun)}
+dialog#lb button{position:absolute;top:-6px;right:-6px;all:unset;cursor:pointer;color:#fff;font:700 15px var(--mono)}
+
+/* preço */
+.price-l{position:absolute;left:0;top:0;bottom:0;width:900px;background:var(--sun);color:var(--ink);padding:170px 100px 0}
+.price-l .k{color:var(--ink)}.price-l .k b{background:var(--ink);color:var(--sun)}
+.price-l .val{margin:20px 0 0;font:900 226px/.82 var(--display);white-space:nowrap;text-transform:uppercase;letter-spacing:-.01em}
+.price-l .val sup{font-size:.4em;vertical-align:top;position:relative;top:.12em}
+.price-l .note{margin:56px 0 0;font:800 44px/1.15 var(--body)}
+.price-l .note small{display:block;margin-top:14px;font:600 26px/1.3 var(--body)}
+.price-r{position:absolute;left:900px;right:0;top:0;bottom:0;overflow:hidden}
+.price-r img{width:100%;height:100%;object-fit:cover}
+
+/* cidades */
+.duo{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--ink)}
+.duo article{position:relative;overflow:hidden}
+.duo article>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.duo article::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,11,12,.25) 0%,rgba(11,11,12,.2) 25%,rgba(11,11,12,.9) 62%,rgba(11,11,12,.97) 100%)}
+.duo .in{position:absolute;left:70px;right:60px;bottom:90px;z-index:2}
+.duo h3{margin:0;font:900 170px/.85 var(--display);text-transform:uppercase}
+.duo .cota{margin:22px 0 0;font:900 110px/.85 var(--display);color:var(--sun)}
+.duo .cota small{display:block;margin-top:12px;font:600 17px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--soft)}
+.duo .cr{z-index:3;top:auto;bottom:62px}
+.duo-k{position:absolute;left:70px;top:118px;z-index:4;background:rgba(11,11,12,.72);padding:12px 16px;border-radius:10px}
+
+/* conflitos */
+table.cf{width:100%;border-collapse:collapse;margin-top:28px;font-family:var(--body)}
+.cf th{text-align:left;font:600 16px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);padding:0 18px 16px;border-bottom:1px solid var(--line)}
+.cf td{padding:11px 18px;border-bottom:1px solid var(--line);font:500 20px/1.3 var(--body);color:var(--soft);vertical-align:middle}
+.cf td:first-child{font-weight:800;color:#fff;width:330px}
+.cf tr>*:nth-child(2){width:330px}.cf tr>*:nth-child(3){width:250px}
+.risk{display:inline-block;min-width:92px;text-align:center;font:700 15px/1 var(--mono);text-transform:uppercase;letter-spacing:.06em;padding:8px 10px;border-radius:999px;margin-right:12px}
+.risk.alto{background:#FF4D4D;color:#fff}.risk.medio{background:var(--sun);color:var(--ink)}.risk.baixo{background:#2BD47D;color:var(--ink)}
+.verdict{margin-top:24px;display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;background:var(--sun);color:var(--ink);border-radius:18px;padding:24px 30px}
+.verdict b{font:900 50px/.9 var(--display);text-transform:uppercase}
+.verdict p{margin:0;font:600 22px/1.38 var(--body)}
+
+/* oportunidades */
+.prem{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;margin-top:70px}
+.prem div{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:30px;backdrop-filter:blur(6px)}
+.prem i{display:grid;place-items:center;width:62px;height:62px;border-radius:50%;background:var(--sun);color:var(--ink);font:900 38px/1 var(--display);font-style:normal}
+.prem b{display:block;margin:22px 0 8px;font:900 52px/.9 var(--display);text-transform:uppercase}
+.prem span{font:500 23px/1.38 var(--body);color:var(--soft)}
+.sala-ph{position:absolute;left:0;top:0;bottom:0;width:980px;overflow:hidden}
+.sala-ph img{width:100%;height:100%;object-fit:cover}
+.sala-r{position:absolute;left:1060px;right:110px;top:140px}
+.sala-r p.tx{margin:30px 0 0;font:500 27px/1.42 var(--body);color:var(--soft)}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:40px}
+.kv div{background:var(--ink-2);border:1px solid var(--line);border-radius:16px;padding:20px 22px}
+.kv small{display:block;font:600 14px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:10px}
+.kv strong{font:800 27px/1.2 var(--body)}
+.kv strong.y{color:var(--sun)}
+.why{position:absolute;left:120px;top:140px;width:1000px}
+.why ul{list-style:none;margin:26px 0 0;padding:0;display:grid;gap:12px}
+.why li{position:relative;padding-left:34px;font:500 23px/1.36 var(--body);color:var(--soft)}
+.why li::before{content:"";position:absolute;left:0;top:12px;width:14px;height:14px;border-radius:50%;background:var(--sun)}
+.why-ph{position:absolute;right:120px;top:140px;display:grid;grid-template-columns:1fr 1fr;gap:12px;width:620px;height:450px}
+.why-ph figure{margin:0;position:relative;overflow:hidden;border-radius:18px}
+.why-ph img{width:100%;height:100%;object-fit:cover}
+.why-ph .cr{font-size:11px;right:10px;bottom:10px}
+.cards2{display:grid;grid-template-columns:1fr 1fr;gap:36px;margin-top:40px}
+.op{background:var(--ink-2);border:1px solid var(--line);border-radius:22px;overflow:hidden;display:grid;grid-template-rows:400px auto}
+.op .ph{position:relative;overflow:hidden}
+.op .ph img{width:100%;height:100%;object-fit:cover}
+.op .ph .cr{font-size:11px;bottom:12px}
+.op .ph.type{background:var(--sun);color:var(--ink);display:grid;place-items:center;font:900 150px/.85 var(--display);text-transform:uppercase;text-align:center}
+.op .ph.type small{display:block;font:700 22px/1 var(--mono);letter-spacing:.1em}
+.op .bd{padding:26px 32px 30px}
+.op h3{margin:0 0 6px;font:900 54px/.95 var(--display);text-transform:uppercase}
+.op .city{font:600 15px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--sun)}
+.op p{margin:12px 0 0;font:500 21px/1.38 var(--body);color:var(--soft)}
+.op .meta{display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:16px;font:600 16px/1.3 var(--mono);color:#fff}
+.op .meta b{color:var(--sun);font-weight:600}
+.trio3{display:grid;grid-template-columns:1fr 1fr .86fr;gap:30px;margin-top:40px}
+.trio3 .op{grid-template-rows:330px auto}
+.rule{background:var(--sun);color:var(--ink);border-radius:22px;padding:34px 34px}
+.rule small{display:block;font:700 16px/1.3 var(--mono);text-transform:uppercase;letter-spacing:.08em}
+.rule b{display:block;margin:20px 0 18px;font:900 76px/.86 var(--display);text-transform:uppercase}
+.rule p{margin:0;font:600 21px/1.42 var(--body)}
+.g4b{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;margin-top:46px}
+.g4b article{background:var(--ink-2);border:1px solid var(--line);border-radius:22px;padding:30px 28px;display:flex;flex-direction:column}
+.g4b strong{font:900 96px/.85 var(--display);color:var(--sun)}
+.g4b small{display:block;margin-top:8px;font:600 15px/1.3 var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--mute)}
+.g4b h3{margin:30px 0 4px;font:900 44px/.95 var(--display);text-transform:uppercase}
+.g4b p{margin:12px 0 0;font:500 20px/1.4 var(--body);color:var(--soft)}
+.g4b .when{margin-top:auto;padding-top:20px;font:600 15px/1.35 var(--mono);color:#fff}
+
+/* ativação */
+.steps{list-style:none;margin:36px 0 0;padding:0;display:grid;gap:14px;max-width:1000px}
+.steps li{display:grid;grid-template-columns:58px 1fr;gap:18px;align-items:center;font:600 28px/1.3 var(--body)}
+.steps li i{display:grid;place-items:center;width:58px;height:58px;border-radius:50%;background:var(--sun);color:var(--ink);font:900 34px/1 var(--display);font-style:normal}
+.disc{margin-top:40px;max-width:1120px;border:1px dashed rgba(255,255,255,.45);border-radius:14px;padding:18px 22px;font:500 19px/1.45 var(--mono);color:var(--soft);background:rgba(0,0,0,.35)}
+.disc b{color:var(--sun)}
+
+/* potencializar */
+.pot{display:grid;grid-template-columns:1fr 1fr;gap:36px;margin-top:44px}
+.pot article{position:relative;height:620px;border-radius:24px;overflow:hidden}
+.pot img{width:100%;height:100%;object-fit:cover}
+.pot article::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,11,12,0) 30%,rgba(11,11,12,.92) 78%)}
+.pot .in{position:absolute;left:40px;right:40px;bottom:36px;z-index:2}
+.pot small{font:600 17px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--sun)}
+.pot h3{margin:12px 0 12px;font:900 64px/.92 var(--display);text-transform:uppercase}
+.pot p{margin:0;font:500 23px/1.4 var(--body);color:var(--soft)}
+
+/* influencers */
+.inf-l{position:absolute;left:120px;top:150px;width:900px}
+.n99{display:block;font:900 470px/.74 var(--display);color:var(--sun);letter-spacing:-.02em}
+.inf-l .t{font-size:170px}
+.inf-l .sub{margin:36px 0 0;font:800 46px/1.1 var(--display);text-transform:uppercase;color:#fff;max-width:17em}
+.inf-v{position:absolute;right:140px;top:110px;width:680px;height:850px;border-radius:28px;overflow:hidden;box-shadow:22px 22px 0 var(--sun)}
+.inf-v video{width:100%;height:100%;object-fit:cover}
+.live{position:absolute;top:20px;left:20px;font:600 16px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;background:#ff3b30;color:#fff;padding:9px 14px 9px 30px;border-radius:999px}
+.live::before{content:"";position:absolute;left:12px;top:50%;width:9px;height:9px;margin-top:-4.5px;border-radius:50%;background:#fff;animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.25}}
+.abada{position:absolute;left:0;top:0;bottom:0;width:870px;overflow:hidden;background:#0b0b0c}
+.abada img{width:100%;height:100%;object-fit:cover;object-position:50% 40%}
+.ab-r{position:absolute;left:960px;right:120px;top:150px}
+.pts{list-style:none;margin:46px 0 0;padding:0;display:grid;gap:16px}
+.pts li{display:grid;grid-template-columns:130px 1fr;gap:20px;align-items:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:18px;padding:20px 24px}
+.pts b{font:900 64px/1 var(--display);color:var(--sun)}
+.pts span{font:500 25px/1.35 var(--body);color:var(--soft)}
+
+/* brindes */
+.gifts{display:grid;grid-template-columns:2fr 1fr 2fr;gap:30px;margin-top:40px}
+.grp>header{border-top:4px solid var(--sun);padding-top:16px;margin-bottom:18px;min-height:96px}
+.grp>header b{display:block;font:900 38px/.95 var(--display);text-transform:uppercase}
+.grp>header span{display:block;margin-top:6px;font:500 19px/1.3 var(--body);color:var(--mute)}
+.grp>div{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:20px}
+.gift{background:var(--ink-2);border:1px solid var(--line);border-radius:20px;overflow:hidden}
+.gift figure{margin:0;height:330px;position:relative;overflow:hidden;background:#fff}
+.gift figure img{width:100%;height:100%;object-fit:cover}
+.gift .tag{position:absolute;left:12px;top:12px;font:700 12px/1.25 var(--mono);text-transform:uppercase;letter-spacing:.04em;background:var(--ink);color:var(--sun);padding:7px 9px;border-radius:7px;max-width:88%}
+.gift div{padding:18px 20px 22px}
+.gift h3{margin:0;font:900 34px/.95 var(--display);text-transform:uppercase}
+.gift p{margin:8px 0 0;font:500 19px/1.35 var(--body);color:var(--soft)}
+
+/* diretriz */
+.solar-s{background:var(--sun);color:var(--ink)}
+.solar-s .k{color:var(--ink)}.solar-s .k b{background:var(--ink);color:var(--sun)}
+.solar-s .lead{color:var(--ink);font-weight:700;font-size:40px;max-width:26em}
+.solar-s .lead+.lead{font-weight:500;font-size:30px}
+
+#start{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:9vh;gap:14px;background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,.7));cursor:pointer}
+#start button{all:unset;cursor:pointer;display:flex;align-items:center;gap:12px;background:var(--sun);color:var(--ink);font:800 clamp(16px,1.6vw,22px)/1 var(--body);padding:18px 28px;border-radius:999px;box-shadow:0 12px 40px rgba(0,0,0,.4)}
+#start button:focus-visible{outline:3px solid #fff;outline-offset:4px}
+#start p{margin:0;font:500 clamp(12px,1vw,15px)/1.4 var(--mono);color:#fff;letter-spacing:.06em;text-align:center}
+@media (prefers-reduced-motion:reduce){.track{animation:none}.live::before{animation:none}}
+</style>
+</head>
+<body class="inst">
+<div id="stage">
+
+<!-- 1 · capa institucional -->
+<section class="s inst-s" data-kind="inst" aria-label="Capa">
+  <img class="bg" src="assets/inst/capa.webp" alt="dot.promo, sua agência de live marketing">
+  <p class="nota-legal" data-a="fade" data-d="1">A <span class="nc">dot.promo</span> retém todos os direitos de propriedade intelectual sobre o projeto apresentado e reforça que é proibido copiar, reproduzir, modificar, distribuir ou criar obras derivadas a partir deste projeto, no todo ou em parte, assim como, sublicenciar, transferir ou compartilhar o projeto com terceiros sem a autorização prévia e por escrito da agência. Todas as informações, ideias, conceitos, e detalhes relacionados ao projeto devem ser tratados como confidenciais e não podem ser divulgados ou compartilhados com terceiros sem o consentimento por escrito da agência <span class="nc">dot.promo</span>.</p>
+</section>
+
+<!-- 2 · abertura -->
+<section class="s hero" data-kind="chap" data-num="99" data-chap="Para todos" aria-label="Para todos">
+  <video class="bgv zoom" muted loop playsinline preload="auto" poster="assets/v/video-hero.webp"><source src="assets/v/video-hero.mp4" type="video/mp4"></video>
+  <div class="sh sh-b"></div><div class="sh sh-l" style="opacity:.7"></div>
+  <div class="bl">
+    <p class="k" data-a="up" data-d=".2">Cofrinho 99 · a raiz das ações no carnaval</p>
+    <h1 class="t t-xl" data-a="mask" data-d=".3"><span class="m"><span>Para todos.</span></span><span class="m"><span class="y">Democrático.</span></span></h1>
+    <div class="land" data-a="up" data-d="1.1"><p>Por isso aterrissamos nossos esforços no carnaval que tem a maior sinergia com esse argumento.</p><span class="pill">O carnaval de Pernambuco</span></div>
+  </div>
+</section>
+
+<!-- 3 · cap 01 -->
+<section class="s" data-kind="chap" data-num="01" data-chap="01 · Recife e Olinda" aria-label="Recife e Olinda">
+  <img class="bg zoom" src="assets/real/capa-recife-olinda.webp" alt="Telhados coloridos de Olinda, o mar e os prédios do Recife no horizonte" style="object-position:50% 40%">
+  <div class="sh sh-b"></div><div class="sh sh-l" style="opacity:.75"></div>
+  <span class="cr">Thaísa Falcão · CC BY-SA 4.0</span>
+  <div class="bl">
+    <p class="k" data-a="up" data-d=".2"><b>01</b> Recife e Olinda</p>
+    <h2 class="t t-l" data-a="mask" data-d=".3"><span class="m"><span>Um carnaval</span></span><span class="m"><span>que une</span></span><span class="m"><span class="y">todo mundo</span></span></h2>
+    <p class="lead" data-a="up" data-d="1">Duas cidades vizinhas, um só carnaval: o casario de Olinda de frente para o Recife.</p>
+  </div>
+</section>
+
+<!-- 4 · pilares -->
+<section class="s" data-chap="01 · Recife e Olinda" aria-label="Múltiplo em tudo">
+  <div class="box">
+    <p class="k" data-a="up">Recife e Olinda</p>
+    <h2 class="t t-m" data-a="mask"><span class="m"><span>Múltiplo <span class="y">em tudo</span></span></span></h2>
+  </div>
+  <div class="pil" data-a="kids" data-d=".4">
+    <article><figure><img src="assets/real/recife-05.webp" alt="Caboclinhos com cocares de penas coloridas no Recife"><span class="cr">Noelia Brito · CC BY-SA 4.0</span></figure><div><small>Multicultural</small><strong data-count>332</strong><span>agremiações no concurso do Recife: maracatus, caboclinhos, ursos, troças, frevo</span></div></article>
+    <article><figure><img src="assets/real/recife-02.webp" alt="Maracatu desfilando no Recife Antigo"><span class="cr">Hansfotos · CC BY-SA 4.0</span></figure><div><small>Multirrítmico</small><strong data-count>12</strong><span>ritmos na rua: frevo, maracatu, caboclinho, afoxé, coco, ciranda, brega e mais</span></div></article>
+    <article><figure><img src="assets/real/olinda-01.webp" alt="Ladeira de Olinda cheia de foliões e sombrinhas de frevo"><span class="cr">Hansfotos · CC BY-SA 4.0</span></figure><div><small>Multipolos</small><strong data-count>50</strong><span>polos no Recife, 13 nos bairros, mais as ladeiras de Olinda</span></div></article>
+    <article><figure><img src="assets/real/galo-01.webp" alt="Multidão fantasiada no Galo da Madrugada"><span class="cr">Foto: Ministério da Cultura · CC BY 2.0</span></figure><div><small>Une todas as classes</small><strong>R$ 0</strong><span>para entrar no Galo, nos polos e nas ladeiras. Do camarote à calçada, a mesma festa</span></div></article>
+  </div>
+</section>
+
+<!-- 5 · números PE -->
+<section class="s" data-chap="01 · Recife e Olinda" aria-label="Números">
+  <img class="bg zoom" src="assets/real/galo-12.webp" alt="" style="filter:grayscale(.3)">
+  <div class="sh sh-xx"></div>
+  <div class="box">
+    <p class="k" data-a="up">Carnaval de Pernambuco · 2026</p>
+    <div class="nums2" data-a="kids" data-d=".2">
+      <div><strong data-count>3,7 mi</strong><span>foliões no Carnaval do Recife, em 7 dias</span></div>
+      <div><strong data-count>4 mi</strong><span>foliões nas ruas de Olinda</span></div>
+    </div>
+    <div class="nums4" data-a="kids" data-d=".6">
+      <div><strong data-count>98%</strong><span>das cerca de 3 mil apresentações do Recife são de artistas de Pernambuco</span></div>
+      <div><strong data-count>60+</strong><span>prévias gratuitas no Recife antes do carnaval</span></div>
+      <div><strong data-count>51%</strong><span>dos visitantes do Recife vieram pela primeira vez</span></div>
+      <div><strong data-count>R$ 2,8 bi</strong><span>movimentados no Recife, com 60 mil empregos</span></div>
+    </div>
+    <p class="src" style="margin-top:40px" data-a="fade" data-d="1.2">Fontes: Prefeitura do Recife e gestão municipal de Olinda, 2026.</p>
+  </div>
+  <span class="cr">Heekay · CC BY-SA 3.0</span>
+</section>
+
+<!-- 6 · ritmos -->
+<section class="s" data-chap="01 · Recife e Olinda" aria-label="Maracatu, caboclo de lança e frevo">
+  <div class="tri">
+    <figure data-a="rise" data-d="0"><video muted loop playsinline preload="auto" poster="assets/v/real-maracatu.webp"><source src="assets/v/real-maracatu.mp4" type="video/mp4"></video><figcaption>Maracatu</figcaption><span class="cr">Prefeitura de Olinda · CC BY 2.0</span></figure>
+    <figure data-a="rise" data-d=".15"><video muted loop playsinline preload="auto" poster="assets/v/real-caboclo.webp"><source src="assets/v/real-caboclo.mp4" type="video/mp4"></video><figcaption>Caboclo<br>de lança</figcaption><span class="cr">Noelia Brito · CC BY-SA 4.0</span></figure>
+    <figure data-a="rise" data-d=".3"><video muted loop playsinline preload="auto" poster="assets/v/real-frevo.webp"><source src="assets/v/real-frevo.mp4" type="video/mp4"></video><figcaption>Frevo</figcaption><span class="cr">Prefeitura de Olinda · CC BY 2.0</span></figure>
+  </div>
+  <p class="k tri-k" data-a="up" data-d=".8">A cultura de Pernambuco na rua</p>
+</section>
+
+<!-- 7 · cap 02 galo -->
+<section class="s" data-kind="chap" data-num="02" data-chap="02 · Galo da Madrugada" aria-label="Galo da Madrugada">
+  <img class="bg zoom" src="assets/real/galo-capa-1.webp" alt="Vista aérea do galo gigante na ponte Duarte Coelho e a multidão" style="object-position:50% 18%">
+  <div class="sh sh-b"></div><div class="sh sh-l" style="opacity:.6"></div>
+  <span class="cr">Aluísio Moreira · CC BY-SA 2.0</span>
+  <div class="bl">
+    <p class="k" data-a="up" data-d=".2"><b>02</b> O bloco que mais traduz essa verdade</p>
+    <h2 class="t t-xl" data-a="mask" data-d=".3"><span class="m"><span>Galo da</span></span><span class="m"><span class="y">Madrugada</span></span></h2>
+    <p class="lead" data-a="up" data-d="1">Maior bloco do mundo, gratuito, com repercussão que vai muito além do Recife.</p>
+  </div>
+</section>
+
+<!-- 8 · galo números -->
+<section class="s" data-chap="02 · Galo da Madrugada" aria-label="Galo em números">
+  <img class="bg zoom" src="assets/real/galo-capa-3.webp" alt="">
+  <div class="sh sh-xx"></div>
+  <div class="box">
+    <p class="k" data-a="up">Galo da Madrugada · em números</p>
+    <div class="g8" data-a="kids" data-d=".2">
+      <div><strong class="y" data-count>2,5 mi+</strong><span>foliões no desfile de 2026, segundo a organização</span></div>
+      <div><strong>Nº 1</strong><span>maior bloco de carnaval do mundo no Guinness</span></div>
+      <div><strong data-count>30 trios</strong><span>e 6 alegorias no desfile de 2026</span></div>
+      <div><strong data-count>9 h</strong><span>de desfile, das 9h às 18h</span></div>
+      <div><strong data-count>6,5 km</strong><span>de percurso pelo centro do Recife</span></div>
+      <div><strong data-count>32 m</strong><span>de altura do galo gigante na ponte Duarte Coelho</span></div>
+      <div><strong>1978</strong><span>ano de fundação</span></div>
+      <div><strong class="y">06/02</strong><span>próximo desfile, sábado de Zé Pereira de 2027</span></div>
+    </div>
+  </div>
+  <span class="cr">Aluísio Moreira · CC BY-SA 2.0</span>
+</section>
+
+<!-- 9 · galo diversidade -->
+<section class="s" data-chap="02 · Galo da Madrugada" aria-label="Diversidade no Galo">
+  <div class="mos" data-a="pop" data-d=".1">
+    <figure><img src="assets/real/galo-03.webp" alt="Foliões com sombrinhas de frevo no Galo"><span class="cr">Foto: Ministério da Cultura · CC BY 2.0</span></figure>
+    <figure><img src="assets/real/galo-04.webp" alt="Foliões fantasiados com galos de papel"><span class="cr">Foto: Ministério da Cultura · CC BY 2.0</span></figure>
+    <figure><img src="assets/real/galo-09.webp" alt="Folião de camisa florida e chapéu dançando"><span class="cr">Foto: Ministério da Cultura · CC BY 2.0</span></figure>
+    <figure><img src="assets/real/galo-10.webp" alt="Alegorias e multidão no percurso do Galo"><span class="cr">Foto: Ministério da Cultura · CC BY 2.0</span></figure>
+    <figure><img src="assets/real/galo-05.webp" alt="Multidão colorida no centro do Recife"><span class="cr">Foto: Ministério da Cultura · CC BY 2.0</span></figure>
+    <figure><img src="assets/real/galo-02.webp" alt="Foliões de todas as idades no desfile"><span class="cr">Foto: Ministério da Cultura · CC BY 2.0</span></figure>
+  </div>
+  <div class="div-l">
+    <p class="k" data-a="up">Galo da Madrugada · quem vai</p>
+    <h2 class="t t-m" data-a="mask"><span class="m"><span>Do camarote</span></span><span class="m"><span>à calçada,</span></span><span class="m"><span class="y">a mesma festa</span></span></h2>
+    <ul data-a="kids" data-d=".7">
+      <li><b>Gratuito e aberto:</b> mais de 2,5 milhões na rua, de todas as idades, bairros e classes.</li>
+      <li><b>Fantasia é regra:</b> um professor de 67 anos foi "de fuxico" e dançou o percurso inteiro.</li>
+      <li><b>Camarote e rua juntos:</b> camarotes de R$ 380 a R$ 530; o desfile na rua é de graça.</li>
+      <li><b>Gente de fora:</b> foliões da Paraíba, Alagoas, Bahia e São Paulo.</li>
+      <li><b>Acessível:</b> audiodescrição, braile e Libras na Corrida do Galo.</li>
+    </ul>
+    <p class="src" style="margin-top:26px" data-a="fade" data-d="1.3">Fonte: Folha de Pernambuco, fevereiro de 2026; Galo da Madrugada.</p>
+  </div>
+</section>
+
+<!-- 10 · patrocínio galo -->
+<section class="s" data-chap="02 · Galo da Madrugada" aria-label="Patrocinadores do Galo">
+  <img class="bg zoom" src="assets/real/galo-07.webp" alt="">
+  <div class="sh sh-xx"></div>
+  <div class="box">
+    <p class="k" data-a="up">Galo da Madrugada · patrocinadores 2026</p>
+    <h2 class="t t-m" data-a="mask"><span class="m"><span>Bradesco no banco.</span></span><span class="m"><span class="y">99Pay como fintech.</span></span></h2>
+    <div class="chips" data-a="pop" data-d=".6">
+      <span>Esportes da Sorte<small>master</small></span>
+      <span class="bank">Bradesco<small>banco</small></span>
+      <span class="bank">Cateno<small>meios de pagamento</small></span>
+      <span>Amstel</span><span>Vivo</span><span>Jeep</span><span>O Boticário</span>
+      <span>EDS<small>apoio</small></span><span>Seara</span><span>Pitú</span><span>Brasil Gás</span><span>Esmaltec</span><span>Indaiá</span><span>Fecomércio PE</span><span>Suape</span>
+    </div>
+    <div class="fit">
+      <p data-a="up" data-d="1">O Bradesco segue no Galo como banco. A 99Pay entra como fintech, outra categoria, com um produto de conta e rendimento. Não há regra pública de exclusividade, e o Galo já conviveu com banco e meio de pagamento no mesmo ano. Acreditamos que não haverá conflito; confirmamos com a organização no fechamento da cota.</p>
+      <div class="cred" data-a="up" data-d="1.2"><small>Credencial</small><p>No Galo 2026, a <span class="nc">dot.</span> operou a ação de O Boticário e o camarote do Bradesco.</p><em>Fonte: Promoview</em></div>
+    </div>
+  </div>
+  <span class="cr">Foto: Ministério da Cultura · CC BY 2.0</span>
+</section>
+
+<!-- 11 · cap 03 repercussão -->
+<section class="s" data-kind="chap" data-num="03" data-chap="03 · Repercussão" aria-label="Repercussão">
+  <div class="box" style="bottom:auto;top:120px">
+    <p class="k" data-a="up" data-d=".2"><b>03</b> Repercussão</p>
+    <h2 class="t t-m" data-a="mask" data-d=".3"><span class="m"><span>Um bloco para todos</span></span><span class="m"><span class="y">e visto por todos.</span></span></h2>
+    <div class="stats" data-a="kids" data-d=".7"><div><strong>149 mi</strong><span>visualizações da transmissão do Carnaval do Recife 2026</span></div><div><strong>82 países</strong><span>com audiência na transmissão</span></div><div><strong>25 veículos</strong><span>retransmitiram o sinal, de Globo a SBT</span></div><div><strong>290+</strong><span>profissionais de imprensa credenciados</span></div></div>
+    <p class="src" style="margin-top:14px" data-a="fade" data-d="1.1">Fontes: Prefeitura do Recife, balanço de 18/02/2026 (+11% sobre 2025) e credenciamento de 2024. Abaixo, uma amostra do que saiu sobre o Galo.</p>
+  </div>
+  <div class="wall" style="bottom:56px" data-a="fade" data-d=".6"><div class="row" style="--dur:112s"><div class="track"><button type="button" class="clip" style="--h:176px" data-u="https://www.folhape.com.br/noticias/carnaval-2026-galo-da-madrugada-arrasta-milhoes-de-folioes-nas-ruas/467917/" data-i="assets/clip/m-01.webp" data-t="Folha de Pernambuco · Carnaval 2026: presente no Galo da Madrugada, irreverência marca desfile"><img src="assets/clip/m-01.webp" alt="Folha de Pernambuco: Carnaval 2026: presente no Galo da Madrugada, irreverência marca desfile" loading="lazy"><span class="tag3 ">Folha de Pernambuco</span></button><button type="button" class="clip" style="--h:176px" data-u="https://www.folhape.com.br/noticias/galo-da-madrugada-anuncia-data-do-desfile-em-2027/467994/" data-i="assets/clip/m-02.webp" data-t="Folha de Pernambuco · Na passagem do último trio, Galo da Madrugada anuncia data do desfile em 2027"><img src="assets/clip/m-02.webp" alt="Folha de Pernambuco: Na passagem do último trio, Galo da Madrugada anuncia data do desfile em 2027" loading="lazy"><span class="tag3 ">Folha de Pernambuco</span></button><button type="button" class="clip" style="--h:176px" data-u="https://www.poder360.com.br/poder-cultura/recife-bate-2-recordes-mundiais-com-galo-da-madrugada/" data-i="assets/clip/m-03.webp" data-t="Poder360 · Recife bate 2 recordes mundiais com Galo da Madrugada"><img src="assets/clip/m-03.webp" alt="Poder360: Recife bate 2 recordes mundiais com Galo da Madrugada" loading="lazy"><span class="tag3 ">Poder360</span></button><button type="button" class="clip" style="--h:176px" data-u="https://www.cnnbrasil.com.br/entretenimento/galo-da-madrugada-lota-bairro-do-recife-com-milhoes-de-pessoas/" data-i="assets/clip/m-04.webp" data-t="CNN Brasil · Galo da Madrugada lota bairro do Recife com milhões de pessoas"><img src="assets/clip/m-04.webp" alt="CNN Brasil: Galo da Madrugada lota bairro do Recife com milhões de pessoas" loading="lazy"><span class="tag3 ">CNN Brasil</span></button><button type="button" class="clip" style="--h:176px" data-u="https://istoe.com.br/galo-da-madrugada-nao-sai-de-madrugada-e-esta-no-guinness-veja-curiosidades" data-i="assets/clip/m-05.webp" data-t="IstoÉ · Galo da Madrugada não sai de madrugada e está no Guinness; veja 7 fatos do desfile"><img src="assets/clip/m-05.webp" alt="IstoÉ: Galo da Madrugada não sai de madrugada e está no Guinness; veja 7 fatos do desfile" loading="lazy"><span class="tag3 ">IstoÉ</span></button><button type="button" class="clip" style="--h:176px" data-u="https://www.band.com.br/bandnews-fm/noticias/galo-da-madrugada-gigante-arrasta-multidao-no-recife-com-30-trios-eletricos-202602140054" data-i="assets/clip/m-06.webp" data-t="Band (BandNews FM) · Galo da Madrugada gigante arrasta multidão no Recife com 30 trios elétricos"><img src="assets/clip/m-06.webp" alt="Band (BandNews FM): Galo da Madrugada gigante arrasta multidão no Recife com 30 trios elétricos" loading="lazy"><span class="tag3 ">Band (BandNews FM)</span></button><button type="button" class="clip" style="--h:176px" data-u="https://www2.recife.pe.gov.br/noticias/18/02/2026/carnaval-do-recife-atrai-mais-de-37-milhoes-de-folioes-e-injeta-r-28-bilhoes-na" data-i="assets/clip/m-13.webp" data-t="Prefeitura do Recife · Carnaval do Recife atrai mais de 3,7 milhões de foliões e injeta R$ 2,8 bilhões"><img src="assets/clip/m-13.webp" alt="Prefeitura do Recife: Carnaval do Recife atrai mais de 3,7 milhões de foliões e injeta R$ 2,8 bilhões" loading="lazy"><span class="tag3 ">Prefeitura do Recife</span></button><button type="button" class="clip" style="--h:176px" data-u="https://www.diariodepernambuco.com.br/vida-urbana/2026/02/11707982-olinda-faz-balanco-do-carnaval-2026-4-milhoes-de-folioes-nas-ruas-e-rs-15-bi-injetados-na-economia-local.html" data-i="assets/clip/m-14.webp" data-t="Diario de Pernambuco · Olinda faz balanço do Carnaval 2026: 4 milhões de foliões e R$ 1,5 bi na economia"><img src="assets/clip/m-14.webp" alt="Diario de Pernambuco: Olinda faz balanço do Carnaval 2026: 4 milhões de foliões e R$ 1,5 bi na economia" loading="lazy"><span class="tag3 ">Diario de Pernambuco</span></button><button type="button" class="clip" style="--h:176px" data-u="https://www2.recife.pe.gov.br/noticias/22/01/2026/com-50-polos-e-3-mil-apresentacoes-carnaval-do-futuro-celebra-diversidade" data-i="assets/clip/m-15.webp" data-t="Prefeitura do Recife · Com 50 polos e 3 mil apresentações, Carnaval do Futuro celebra diversidade musical"><img src="assets/clip/m-15.webp" alt="Prefeitura do Recife: Com 50 polos e 3 mil apresentações, Carnaval do Futuro celebra diversidade musical" loading="lazy"><span class="tag3 ">Prefeitura do Recife</span></button><button type="button" class="clip" style="--h:176px" data-u="https://anp.com.br/bonecos-gigantes-de-olinda-wagner-moura-papa-leao-xiv-e-joao-gomes-festejam-o-carnaval-de-2026/" data-i="assets/clip/m-16.webp" data-t="ANP (Agência Brasil) · Bonecos Gigantes de Olinda: Wagner Moura, Papa Leão XIV e João Gomes festejam o Carnaval"><img src="assets/clip/m-16.webp" alt="ANP (Agência Brasil): Bonecos Gigantes de Olinda: Wagner Moura, Papa Leão XIV e João Gomes festejam o Carnaval" loading="lazy"><span class="tag3 ">ANP (Agência Brasil)</span></button><button type="button" class="clip" style="--h:176px" data-u="https://www.brasildefato.com.br/2026/02/12/30-blocos-para-conhecer-no-carnaval-2026-de-olinda-e-recife/" data-i="assets/clip/m-17.webp" data-t="Brasil de Fato · 30 blocos para conhecer no Carnaval 2026 de Olinda e Recife"><img src="assets/clip/m-17.webp" alt="Brasil de Fato: 30 blocos para conhecer no Carnaval 2026 de Olinda e Recife" loading="lazy"><span class="tag3 ">Brasil de Fato</span></button><button type="button" class="clip" style="--h:176px" data-u="https://www.folhape.com.br/noticias/carnaval-2026-em-desfile-historico-e-digno-de-cinema-pitombeira-dos/468067/" data-i="assets/clip/m-18.webp" data-t="Folha de Pernambuco · Em desfile histórico e digno de cinema, Pitombeira dos Quatro Cantos arrasta milhares"><img src="assets/clip/m-18.webp" alt="Folha de Pernambuco: Em desfile histórico e digno de cinema, Pitombeira dos Quatro Cantos arrasta milhares" loading="lazy"><span class="tag3 ">Folha de Pernambuco</span></button><button type="button" class="clip" style="--h:176px" data-u="https://www.youtube.com/watch?v=nKLN9ve_Dqc" data-i="assets/clip/y-01.webp" data-t="YouTube, TV Guararapes · GALO DA MADRUGADA AO VIVO | CARNAVAL DA GUARARAPES 2026"><img src="assets/clip/y-01.webp" alt="YouTube, TV Guararapes: GALO DA MADRUGADA AO VIVO | CARNAVAL DA GUARARAPES 2026" loading="lazy"><span class="tag3 video">YouTube, TV Guararapes</span></button><button type="button" class="clip" style="--h:176px" data-u="https://www.youtube.com/watch?v=L1CFXEO4GNA" data-i="assets/clip/y-02.webp" data-t="YouTube, Fora de Casa - Mas em Casa · Ao vivo no Galo da Madrugada 2026, o maior bloco de carnaval do planeta"><img src="assets/clip/y-02.webp" alt="YouTube, Fora de Casa - Mas em Casa: Ao vivo no Galo da Madrugada 2026, o maior bloco de carnaval do planeta" loading="lazy"><span class="tag3 video">YouTube, Fora de Casa - Mas em Casa</span></button><button type="button" class="clip" style="--h:176px" data-u="https://www.youtube.com/watch?v=hjaf60BjF_I" data-i="assets/clip/y-03.webp" data-t="YouTube, Band Jornalismo · Galo da Madrugada: interesting facts about the world&#x27;s largest Carnival group"><img src="assets/clip/y-03.webp" alt="YouTube, Band Jornalismo: Galo da Madrugada: interesting facts about the world&#x27;s largest Carnival group" loading="lazy"><span class="tag3 video">YouTube, Band Jornalismo</span></button><button type="button" class="clip" style="--h:176px" data-u="https://www.youtube.com/watch?v=QdrTjWMHmLI" data-i="assets/clip/y-04.webp" data-t="YouTube, CGTN America · World biggest block party attracts more than 2 million people"><img src="assets/clip/y-04.webp" alt="YouTube, CGTN America: World biggest block party attracts more than 2 million people" loading="lazy"><span class="tag3 video">YouTube, CGTN America</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:176px" data-u="https://www.folhape.com.br/noticias/carnaval-2026-galo-da-madrugada-arrasta-milhoes-de-folioes-nas-ruas/467917/" data-i="assets/clip/m-01.webp" data-t="Folha de Pernambuco · Carnaval 2026: presente no Galo da Madrugada, irreverência marca desfile"><img src="assets/clip/m-01.webp" alt="Folha de Pernambuco: Carnaval 2026: presente no Galo da Madrugada, irreverência marca desfile" loading="lazy"><span class="tag3 ">Folha de Pernambuco</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:176px" data-u="https://www.folhape.com.br/noticias/galo-da-madrugada-anuncia-data-do-desfile-em-2027/467994/" data-i="assets/clip/m-02.webp" data-t="Folha de Pernambuco · Na passagem do último trio, Galo da Madrugada anuncia data do desfile em 2027"><img src="assets/clip/m-02.webp" alt="Folha de Pernambuco: Na passagem do último trio, Galo da Madrugada anuncia data do desfile em 2027" loading="lazy"><span class="tag3 ">Folha de Pernambuco</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:176px" data-u="https://www.poder360.com.br/poder-cultura/recife-bate-2-recordes-mundiais-com-galo-da-madrugada/" data-i="assets/clip/m-03.webp" data-t="Poder360 · Recife bate 2 recordes mundiais com Galo da Madrugada"><img src="assets/clip/m-03.webp" alt="Poder360: Recife bate 2 recordes mundiais com Galo da Madrugada" loading="lazy"><span class="tag3 ">Poder360</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:176px" data-u="https://www.cnnbrasil.com.br/entretenimento/galo-da-madrugada-lota-bairro-do-recife-com-milhoes-de-pessoas/" data-i="assets/clip/m-04.webp" data-t="CNN Brasil · Galo da Madrugada lota bairro do Recife com milhões de pessoas"><img src="assets/clip/m-04.webp" alt="CNN Brasil: Galo da Madrugada lota bairro do Recife com milhões de pessoas" loading="lazy"><span class="tag3 ">CNN Brasil</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:176px" data-u="https://istoe.com.br/galo-da-madrugada-nao-sai-de-madrugada-e-esta-no-guinness-veja-curiosidades" data-i="assets/clip/m-05.webp" data-t="IstoÉ · Galo da Madrugada não sai de madrugada e está no Guinness; veja 7 fatos do desfile"><img src="assets/clip/m-05.webp" alt="IstoÉ: Galo da Madrugada não sai de madrugada e está no Guinness; veja 7 fatos do desfile" loading="lazy"><span class="tag3 ">IstoÉ</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:176px" data-u="https://www.band.com.br/bandnews-fm/noticias/galo-da-madrugada-gigante-arrasta-multidao-no-recife-com-30-trios-eletricos-202602140054" data-i="assets/clip/m-06.webp" data-t="Band (BandNews FM) · Galo da Madrugada gigante arrasta multidão no Recife com 30 trios elétricos"><img src="assets/clip/m-06.webp" alt="Band (BandNews FM): Galo da Madrugada gigante arrasta multidão no Recife com 30 trios elétricos" loading="lazy"><span class="tag3 ">Band (BandNews FM)</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:176px" data-u="https://www2.recife.pe.gov.br/noticias/18/02/2026/carnaval-do-recife-atrai-mais-de-37-milhoes-de-folioes-e-injeta-r-28-bilhoes-na" data-i="assets/clip/m-13.webp" data-t="Prefeitura do Recife · Carnaval do Recife atrai mais de 3,7 milhões de foliões e injeta R$ 2,8 bilhões"><img src="assets/clip/m-13.webp" alt="Prefeitura do Recife: Carnaval do Recife atrai mais de 3,7 milhões de foliões e injeta R$ 2,8 bilhões" loading="lazy"><span class="tag3 ">Prefeitura do Recife</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:176px" data-u="https://www.diariodepernambuco.com.br/vida-urbana/2026/02/11707982-olinda-faz-balanco-do-carnaval-2026-4-milhoes-de-folioes-nas-ruas-e-rs-15-bi-injetados-na-economia-local.html" data-i="assets/clip/m-14.webp" data-t="Diario de Pernambuco · Olinda faz balanço do Carnaval 2026: 4 milhões de foliões e R$ 1,5 bi na economia"><img src="assets/clip/m-14.webp" alt="Diario de Pernambuco: Olinda faz balanço do Carnaval 2026: 4 milhões de foliões e R$ 1,5 bi na economia" loading="lazy"><span class="tag3 ">Diario de Pernambuco</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:176px" data-u="https://www2.recife.pe.gov.br/noticias/22/01/2026/com-50-polos-e-3-mil-apresentacoes-carnaval-do-futuro-celebra-diversidade" data-i="assets/clip/m-15.webp" data-t="Prefeitura do Recife · Com 50 polos e 3 mil apresentações, Carnaval do Futuro celebra diversidade musical"><img src="assets/clip/m-15.webp" alt="Prefeitura do Recife: Com 50 polos e 3 mil apresentações, Carnaval do Futuro celebra diversidade musical" loading="lazy"><span class="tag3 ">Prefeitura do Recife</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:176px" data-u="https://anp.com.br/bonecos-gigantes-de-olinda-wagner-moura-papa-leao-xiv-e-joao-gomes-festejam-o-carnaval-de-2026/" data-i="assets/clip/m-16.webp" data-t="ANP (Agência Brasil) · Bonecos Gigantes de Olinda: Wagner Moura, Papa Leão XIV e João Gomes festejam o Carnaval"><img src="assets/clip/m-16.webp" alt="ANP (Agência Brasil): Bonecos Gigantes de Olinda: Wagner Moura, Papa Leão XIV e João Gomes festejam o Carnaval" loading="lazy"><span class="tag3 ">ANP (Agência Brasil)</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:176px" data-u="https://www.brasildefato.com.br/2026/02/12/30-blocos-para-conhecer-no-carnaval-2026-de-olinda-e-recife/" data-i="assets/clip/m-17.webp" data-t="Brasil de Fato · 30 blocos para conhecer no Carnaval 2026 de Olinda e Recife"><img src="assets/clip/m-17.webp" alt="Brasil de Fato: 30 blocos para conhecer no Carnaval 2026 de Olinda e Recife" loading="lazy"><span class="tag3 ">Brasil de Fato</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:176px" data-u="https://www.folhape.com.br/noticias/carnaval-2026-em-desfile-historico-e-digno-de-cinema-pitombeira-dos/468067/" data-i="assets/clip/m-18.webp" data-t="Folha de Pernambuco · Em desfile histórico e digno de cinema, Pitombeira dos Quatro Cantos arrasta milhares"><img src="assets/clip/m-18.webp" alt="Folha de Pernambuco: Em desfile histórico e digno de cinema, Pitombeira dos Quatro Cantos arrasta milhares" loading="lazy"><span class="tag3 ">Folha de Pernambuco</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:176px" data-u="https://www.youtube.com/watch?v=nKLN9ve_Dqc" data-i="assets/clip/y-01.webp" data-t="YouTube, TV Guararapes · GALO DA MADRUGADA AO VIVO | CARNAVAL DA GUARARAPES 2026"><img src="assets/clip/y-01.webp" alt="YouTube, TV Guararapes: GALO DA MADRUGADA AO VIVO | CARNAVAL DA GUARARAPES 2026" loading="lazy"><span class="tag3 video">YouTube, TV Guararapes</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:176px" data-u="https://www.youtube.com/watch?v=L1CFXEO4GNA" data-i="assets/clip/y-02.webp" data-t="YouTube, Fora de Casa - Mas em Casa · Ao vivo no Galo da Madrugada 2026, o maior bloco de carnaval do planeta"><img src="assets/clip/y-02.webp" alt="YouTube, Fora de Casa - Mas em Casa: Ao vivo no Galo da Madrugada 2026, o maior bloco de carnaval do planeta" loading="lazy"><span class="tag3 video">YouTube, Fora de Casa - Mas em Casa</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:176px" data-u="https://www.youtube.com/watch?v=hjaf60BjF_I" data-i="assets/clip/y-03.webp" data-t="YouTube, Band Jornalismo · Galo da Madrugada: interesting facts about the world&#x27;s largest Carnival group"><img src="assets/clip/y-03.webp" alt="YouTube, Band Jornalismo: Galo da Madrugada: interesting facts about the world&#x27;s largest Carnival group" loading="lazy"><span class="tag3 video">YouTube, Band Jornalismo</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:176px" data-u="https://www.youtube.com/watch?v=QdrTjWMHmLI" data-i="assets/clip/y-04.webp" data-t="YouTube, CGTN America · World biggest block party attracts more than 2 million people"><img src="assets/clip/y-04.webp" alt="YouTube, CGTN America: World biggest block party attracts more than 2 million people" loading="lazy"><span class="tag3 video">YouTube, CGTN America</span></button></div></div><div class="row rev" style="--dur:72s"><div class="track"><button type="button" class="clip" style="--h:196px" data-u="https://www.instagram.com/reel/DUvvYUukYP1/" data-i="assets/clip/p-08.webp" data-t="@folhape · Maestro Spok puxa o Hino de Pernambuco no meio do Galo da Madrugada"><img src="assets/clip/p-08.webp" alt="@folhape: Maestro Spok puxa o Hino de Pernambuco no meio do Galo da Madrugada" loading="lazy"><span class="tag3 post">@folhape</span></button><button type="button" class="clip" style="--h:196px" data-u="https://www.instagram.com/reel/DUvgAebETxy/" data-i="assets/clip/p-09.webp" data-t="@folhape · A favorita no Galo: Raphaela Santos estreia no Galo da Madrugada"><img src="assets/clip/p-09.webp" alt="@folhape: A favorita no Galo: Raphaela Santos estreia no Galo da Madrugada" loading="lazy"><span class="tag3 post">@folhape</span></button><button type="button" class="clip" style="--h:196px" data-u="https://www.instagram.com/reel/DUvmuV6EfRR/" data-i="assets/clip/p-10.webp" data-t="@folhape · &quot;A terra vai tremer&quot;: o maior bloco de Carnaval do planeta Terra"><img src="assets/clip/p-10.webp" alt="@folhape: &quot;A terra vai tremer&quot;: o maior bloco de Carnaval do planeta Terra" loading="lazy"><span class="tag3 post">@folhape</span></button><button type="button" class="clip" style="--h:196px" data-u="https://www.instagram.com/reel/DUtpM3qEn2l/" data-i="assets/clip/p-11.webp" data-t="@revistaistoe · Galo da Madrugada arrasta mais de 2,5 milhões de foliões no sábado de Zé Pereira"><img src="assets/clip/p-11.webp" alt="@revistaistoe: Galo da Madrugada arrasta mais de 2,5 milhões de foliões no sábado de Zé Pereira" loading="lazy"><span class="tag3 post">@revistaistoe</span></button><button type="button" class="clip" style="--h:196px" data-u="https://www.instagram.com/reel/DGq_3Faykkd/" data-i="assets/clip/p-12.webp" data-t="@folhape · Galo da Madrugada se despede após mais uma grandiosa edição no centro do Recife"><img src="assets/clip/p-12.webp" alt="@folhape: Galo da Madrugada se despede após mais uma grandiosa edição no centro do Recife" loading="lazy"><span class="tag3 post">@folhape</span></button><button type="button" class="clip" style="--h:196px" data-u="https://www.instagram.com/reel/DGqk7Wcp_mO/" data-i="assets/clip/p-13.webp" data-t="@ln.drone · Isso é o galo!!! (imagens de drone do desfile)"><img src="assets/clip/p-13.webp" alt="@ln.drone: Isso é o galo!!! (imagens de drone do desfile)" loading="lazy"><span class="tag3 post">@ln.drone</span></button><button type="button" class="clip" style="--h:196px" data-u="https://www.instagram.com/p/DUrPeRoj7Eh/" data-i="assets/clip/p-14.webp" data-t="@brasildefatope · Carnaval 2026: 30 blocos de Olinda e Recife para conhecer"><img src="assets/clip/p-14.webp" alt="@brasildefatope: Carnaval 2026: 30 blocos de Olinda e Recife para conhecer" loading="lazy"><span class="tag3 post">@brasildefatope</span></button><button type="button" class="clip" style="--h:196px" data-u="https://www.instagram.com/p/DU6iHAyEZnz/" data-i="assets/clip/p-15.webp" data-t="@carnavalempe · O carnaval de 2027 vai ser na primeira semana de fevereiro, começando dia 06/02"><img src="assets/clip/p-15.webp" alt="@carnavalempe: O carnaval de 2027 vai ser na primeira semana de fevereiro, começando dia 06/02" loading="lazy"><span class="tag3 post">@carnavalempe</span></button><button type="button" class="clip" style="--h:196px" data-u="https://www.instagram.com/reel/DVb-ZvwEXxg/" data-i="assets/clip/p-16.webp" data-t="@bonecosgigantesdeolinda · Bonecos Gigantes pelas ruas do Recife Antigo na terça de carnaval"><img src="assets/clip/p-16.webp" alt="@bonecosgigantesdeolinda: Bonecos Gigantes pelas ruas do Recife Antigo na terça de carnaval" loading="lazy"><span class="tag3 post">@bonecosgigantesdeolinda</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:196px" data-u="https://www.instagram.com/reel/DUvvYUukYP1/" data-i="assets/clip/p-08.webp" data-t="@folhape · Maestro Spok puxa o Hino de Pernambuco no meio do Galo da Madrugada"><img src="assets/clip/p-08.webp" alt="@folhape: Maestro Spok puxa o Hino de Pernambuco no meio do Galo da Madrugada" loading="lazy"><span class="tag3 post">@folhape</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:196px" data-u="https://www.instagram.com/reel/DUvgAebETxy/" data-i="assets/clip/p-09.webp" data-t="@folhape · A favorita no Galo: Raphaela Santos estreia no Galo da Madrugada"><img src="assets/clip/p-09.webp" alt="@folhape: A favorita no Galo: Raphaela Santos estreia no Galo da Madrugada" loading="lazy"><span class="tag3 post">@folhape</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:196px" data-u="https://www.instagram.com/reel/DUvmuV6EfRR/" data-i="assets/clip/p-10.webp" data-t="@folhape · &quot;A terra vai tremer&quot;: o maior bloco de Carnaval do planeta Terra"><img src="assets/clip/p-10.webp" alt="@folhape: &quot;A terra vai tremer&quot;: o maior bloco de Carnaval do planeta Terra" loading="lazy"><span class="tag3 post">@folhape</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:196px" data-u="https://www.instagram.com/reel/DUtpM3qEn2l/" data-i="assets/clip/p-11.webp" data-t="@revistaistoe · Galo da Madrugada arrasta mais de 2,5 milhões de foliões no sábado de Zé Pereira"><img src="assets/clip/p-11.webp" alt="@revistaistoe: Galo da Madrugada arrasta mais de 2,5 milhões de foliões no sábado de Zé Pereira" loading="lazy"><span class="tag3 post">@revistaistoe</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:196px" data-u="https://www.instagram.com/reel/DGq_3Faykkd/" data-i="assets/clip/p-12.webp" data-t="@folhape · Galo da Madrugada se despede após mais uma grandiosa edição no centro do Recife"><img src="assets/clip/p-12.webp" alt="@folhape: Galo da Madrugada se despede após mais uma grandiosa edição no centro do Recife" loading="lazy"><span class="tag3 post">@folhape</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:196px" data-u="https://www.instagram.com/reel/DGqk7Wcp_mO/" data-i="assets/clip/p-13.webp" data-t="@ln.drone · Isso é o galo!!! (imagens de drone do desfile)"><img src="assets/clip/p-13.webp" alt="@ln.drone: Isso é o galo!!! (imagens de drone do desfile)" loading="lazy"><span class="tag3 post">@ln.drone</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:196px" data-u="https://www.instagram.com/p/DUrPeRoj7Eh/" data-i="assets/clip/p-14.webp" data-t="@brasildefatope · Carnaval 2026: 30 blocos de Olinda e Recife para conhecer"><img src="assets/clip/p-14.webp" alt="@brasildefatope: Carnaval 2026: 30 blocos de Olinda e Recife para conhecer" loading="lazy"><span class="tag3 post">@brasildefatope</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:196px" data-u="https://www.instagram.com/p/DU6iHAyEZnz/" data-i="assets/clip/p-15.webp" data-t="@carnavalempe · O carnaval de 2027 vai ser na primeira semana de fevereiro, começando dia 06/02"><img src="assets/clip/p-15.webp" alt="@carnavalempe: O carnaval de 2027 vai ser na primeira semana de fevereiro, começando dia 06/02" loading="lazy"><span class="tag3 post">@carnavalempe</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:196px" data-u="https://www.instagram.com/reel/DVb-ZvwEXxg/" data-i="assets/clip/p-16.webp" data-t="@bonecosgigantesdeolinda · Bonecos Gigantes pelas ruas do Recife Antigo na terça de carnaval"><img src="assets/clip/p-16.webp" alt="@bonecosgigantesdeolinda: Bonecos Gigantes pelas ruas do Recife Antigo na terça de carnaval" loading="lazy"><span class="tag3 post">@bonecosgigantesdeolinda</span></button></div></div></div>
+</section>
+
+<!-- 12 · R$ 300 mil -->
+<section class="s" data-chap="03 · Repercussão" data-solar aria-label="Investimento">
+  <div class="price-r" data-a="wipe" data-d="0"><img class="zoom" src="assets/real/galo-11.webp" alt="Vista aérea da ponte Duarte Coelho com o galo gigante e a multidão"><span class="cr">TV Nova Nordeste · CC BY 3.0</span></div>
+  <div class="price-l" data-a="rise" data-d="0">
+    <p class="k" data-a="up" data-d=".5">Galo da Madrugada · investimento</p>
+    <p class="val" data-a="mask" data-d=".6"><span class="m"><span>R$ 300</span></span><span class="m"><span>mil<sup>*</sup></span></span></p>
+    <p class="note" data-a="up" data-d="1.1">Cota mínima de patrocínio.<small>* Valor sem as taxas.</small></p>
+  </div>
+</section>
+
+<!-- 13 · cap 04 cidades -->
+<section class="s" data-kind="chap" data-num="04" data-chap="04 · Patrocínio das cidades" aria-label="Recife e Olinda">
+  <div class="duo">
+    <article data-a="rise" data-d="0"><img class="zoom" src="assets/real/recife-01.webp" alt="Vista aérea do Galo da Madrugada no centro do Recife"><span class="cr">governadoreduardocampos · CC BY-SA 2.0</span>
+      <div class="in"><h3 data-a="mask" data-d=".4"><span class="m"><span>Recife</span></span></h3><p class="cota" data-a="up" data-d=".7">≈ R$ 1,4 mi<small>cota de patrocínio · referência</small></p>
+      <div class="chips sm" data-a="pop" data-d="1"><span>Esportes da Sorte<small>master</small></span><span class="bank">PagBank<small>pagamento · RioMar</small></span><span class="bank">Mercado Pago<small>apoio 2025 · a confirmar</small></span><span>Sul América<small>apoio 2025</small></span><span>Azul</span><span>Red Bull</span><span>Kwai</span><span>Pitú</span></div></div></article>
+    <article data-a="rise" data-d=".15"><img class="zoom" src="assets/real/olinda-03.webp" alt="Foliões fantasiados com a bandeira de Pernambuco em Olinda"><span class="cr">Prefeitura de Olinda · CC BY 4.0</span>
+      <div class="in"><h3 data-a="mask" data-d=".5"><span class="m"><span>Olinda</span></span></h3><p class="cota" data-a="up" data-d=".8">≈ R$ 800 mil<small>cota de patrocínio · referência</small></p>
+      <div class="chips sm" data-a="pop" data-d="1.1"><span>Governo de PE<small>master</small></span><span>Amstel<small>master</small></span><span>Esportes da Sorte<small>master</small></span><span class="bank">Caixa<small>apoio</small></span><span>Governo Federal<small>apoio</small></span><span>Coca-Cola</span><span>Fini</span><span>Pitú</span></div></div></article>
+  </div>
+  <p class="k duo-k" data-a="up" data-d=".3"><b>04</b> Patrocínio do carnaval das cidades · 2026</p>
+</section>
+
+<!-- 14 · conflitos -->
+<section class="s" data-chap="04 · Patrocínio das cidades" aria-label="Categoria financeira">
+  <div class="box">
+    <p class="k" data-a="up">Recife, Olinda e Galo · categoria financeira</p>
+    <h2 class="t t-s" data-a="mask"><span class="m"><span>Quem já está <span class="y">na festa</span></span></span></h2>
+    <table class="cf"><thead><tr><th>Marca</th><th>Onde</th><th>Categoria</th><th>Risco para a 99Pay</th></tr></thead><tbody data-a="kids" data-d=".4"><tr><td>Bradesco</td><td>Galo da Madrugada</td><td>Banco</td><td><span class="risk medio">médio</span>Banco da casa no Galo. A 99Pay entra como fintech, outra categoria.</td></tr><tr><td>Cateno</td><td>Galo da Madrugada</td><td>Meios de pagamento</td><td><span class="risk medio">médio</span>Mostra que o Galo já aceita mais de uma marca financeira.</td></tr><tr><td>Mercado Pago</td><td>Carnaval do Recife (2025)</td><td>Fintech</td><td><span class="risk alto">alto</span>Única fintech citada como apoio. Confirmar se volta em 2027.</td></tr><tr><td>PagBank</td><td>Cidade Seu Carnaval, RioMar</td><td>Fintech / pagamentos</td><td><span class="risk medio">médio</span>Espaço privado, fora da festa pública.</td></tr><tr><td>Caixa</td><td>Carnaval de Olinda</td><td>Banco público</td><td><span class="risk medio">médio</span>Apoio institucional; sem exclusividade pública.</td></tr><tr><td>Esportes da Sorte</td><td>Recife, Olinda e Galo</td><td>Aposta (master)</td><td><span class="risk medio">médio</span>Ocupa a moldura da festa; não é a mesma categoria.</td></tr><tr><td>Nubank, Itaú, BB, Inter, C6, PicPay</td><td>Ausentes</td><td>Bancos e fintechs</td><td><span class="risk baixo">baixo</span>Nenhum patrocínio na festa pública em 2025 e 2026.</td></tr></tbody></table>
+    <div class="verdict" data-a="up" data-d="1.2"><b>Outra fintech?</b><p>O PagBank é meio de pagamento num espaço privado no RioMar. O Mercado Pago aparece como apoio do Recife em 2025, a confirmar. Em Olinda e no Galo, só bancos e a Cateno: nenhuma fintech de conta ou investimento.</p></div>
+  </div>
+</section>
+
+<!-- 15 · cap 05 oportunidades -->
+<section class="s" data-kind="chap" data-num="05" data-chap="05 · Oportunidades" aria-label="Oportunidades">
+  <img class="bg zoom" src="assets/real/olinda-02.webp" alt="Foliões fantasiados de heróis numa ladeira de Olinda">
+  <div class="sh sh-x"></div>
+  <span class="cr">Prefeitura de Olinda · CC BY 4.0</span>
+  <div class="box">
+    <p class="k" data-a="up" data-d=".2"><b>05</b> Fora do patrocínio macro</p>
+    <h2 class="t t-l" data-a="mask" data-d=".3"><span class="m"><span>Oportunidades</span></span><span class="m"><span class="y">em Recife e Olinda</span></span></h2>
+    <p class="lead" data-a="up" data-d=".8" style="margin-top:22px">Premissas que usamos para validar cada local.</p>
+    <div class="prem" data-a="kids" data-d="1">
+      <div><i>1</i><b>Democrático</b><span>Aberto a todas as classes e estilos.</span></div>
+      <div><i>2</i><b>Projeção</b><span>Alcance que vai além de quem está lá.</span></div>
+      <div><i>3</i><b>Segurança</b><span>Ambiente em que o folião usa o celular.</span></div>
+      <div><i>4</i><b>Viabilidade</b><span>Cota, regra e prazo que cabem.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 16 · sala da justiça -->
+<section class="s" data-chap="05 · Oportunidades" aria-label="Sala da Justiça">
+  <div class="sala-ph" data-a="wipe"><img class="zoom" src="assets/real/op-sala-justica-01.webp" alt="Folião de Homem-Aranha descendo de tirolesa sobre o bloco em Olinda"><span class="cr">Arquimedes Santos · CC BY 2.0</span></div>
+  <div class="sala-r">
+    <p class="k" data-a="up" data-d=".3">Destaque · Olinda</p>
+    <h2 class="t t-s" data-a="mask" data-d=".4"><span class="m"><span>Enquanto isso na</span></span><span class="m"><span class="y">Sala da Justiça</span></span></h2>
+    <p class="tx" data-a="up" data-d=".8">Desde 1995 em Olinda: milhares desfilam de herói, vilão e personagem pop. Cortejo aberto e prévia fechada com shows nacionais.</p>
+    <div class="kv" data-a="kids" data-d="1">
+      <div><small>Público</small><strong class="y">15 mil fantasiados no cortejo (2026)</strong></div>
+      <div><small>Entrada</small><strong>Cortejo grátis · prévia R$ 215 a 430</strong></div>
+      <div><small>Cota de patrocínio</small><strong class="y">R$ 30 a 300 mil (estimativa)</strong></div>
+      <div><small>Quando</small><strong>Prévia em jan · cortejo 07/02</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- 17 · sala por quê -->
+<section class="s" data-chap="05 · Oportunidades" aria-label="Por que a Sala da Justiça">
+  <div class="why">
+    <p class="k" data-a="up">Sala da Justiça · por que a 99Pay</p>
+    <h2 class="t t-s" style="font-size:78px" data-a="mask"><span class="m"><span>Fantasia iguala todo mundo</span></span><span class="m"><span class="y">e todo mundo quer o registro.</span></span></h2>
+    <ul data-a="kids" data-d=".6">
+      <li>Com a 99Pay no cenário dos heróis, a marca aparece nas fotos de milhares de foliões, sem banco ou fintech concorrendo no bloco desde 2023.</li>
+      <li>Atrai estilos diferentes com o mesmo objetivo: o Homem-Aranha desce de tirolesa e a ladeira inteira filma.</li>
+      <li>A prévia 18+ é ambiente controlado para tirar o celular e criar o Cofrinho. O alcance real está nos perfis dos foliões.</li>
+    </ul>
+  </div>
+  <div class="why-ph" data-a="pop" data-d=".3">
+    <figure><img src="assets/real/op-sala-justica-03.webp" alt="Família fantasiada de Mulher-Maravilha no bloco"><span class="cr">Arquimedes Santos · CC BY 2.0</span></figure>
+    <figure><img src="assets/real/op-sala-justica-04.webp" alt="Homem-Aranha abraçando uma criança no bloco"><span class="cr">Arquimedes Santos · CC BY 2.0</span></figure>
+  </div>
+  <div class="wall" style="bottom:60px" data-a="fade" data-d=".8"><div class="row" style="--dur:112s"><div class="track"><button type="button" class="clip" style="--h:196px" data-u="https://www.folhape.com.br/noticias/enquanto-isso-na-sala-da-justica-2026-bloco-promove-encontro-de/468021/" data-i="assets/clip/m-07.webp" data-t="Folha de Pernambuco · &quot;Enquanto Isso na Sala da Justiça&quot; 2026: bloco promove encontro de heróis, em Olinda"><img src="assets/clip/m-07.webp" alt="Folha de Pernambuco: &quot;Enquanto Isso na Sala da Justiça&quot; 2026: bloco promove encontro de heróis, em Olinda" loading="lazy"><span class="tag3 ">Folha de Pernambuco</span></button><button type="button" class="clip" style="--h:196px" data-u="https://www.diariodepernambuco.com.br/carnaval/2026/02/11707756-super-herois-e-viloes-percorrem-ladeiras-com-o-enquanto-isso-na-sala-da-justica.html" data-i="assets/clip/m-08.webp" data-t="Diario de Pernambuco · Super-heróis e vilões percorrem ladeiras com o Enquanto isso na Sala da Justiça"><img src="assets/clip/m-08.webp" alt="Diario de Pernambuco: Super-heróis e vilões percorrem ladeiras com o Enquanto isso na Sala da Justiça" loading="lazy"><span class="tag3 ">Diario de Pernambuco</span></button><button type="button" class="clip" style="--h:196px" data-u="https://www.terra.com.br/diversao/carnaval/enquanto-isso-na-sala-da-justica-em-olinda-faz-parte-da-historia-dos-folioes,a53719c9def725e14326169589bc3876tpes1tnt.html" data-i="assets/clip/m-09.webp" data-t="Terra · &#x27;Enquanto Isso na Sala da Justiça&#x27;, em Olinda, faz parte da história dos foliões"><img src="assets/clip/m-09.webp" alt="Terra: &#x27;Enquanto Isso na Sala da Justiça&#x27;, em Olinda, faz parte da história dos foliões" loading="lazy"><span class="tag3 ">Terra</span></button><button type="button" class="clip" style="--h:196px" data-u="https://www.diariodepernambuco.com.br/carnaval/2026/02/11707764-conheca-a-historia-do-homem-aranha-que-e-atracao-em-olinda-ha-16-anos.html" data-i="assets/clip/m-10.webp" data-t="Diario de Pernambuco · Conheça a história do Homem-Aranha que é atração em Olinda há 16 anos"><img src="assets/clip/m-10.webp" alt="Diario de Pernambuco: Conheça a história do Homem-Aranha que é atração em Olinda há 16 anos" loading="lazy"><span class="tag3 ">Diario de Pernambuco</span></button><button type="button" class="clip" style="--h:196px" data-u="https://www.mundodosotakus.com.br/2026/02/enquanto-isso-sala-justica-2026-olinda-herois-carnaval.html" data-i="assets/clip/m-11.webp" data-t="Mundo dos Otakus · Enquanto Isso na Sala da Justiça 2026: Heróis invadem Olinda em encontro épico"><img src="assets/clip/m-11.webp" alt="Mundo dos Otakus: Enquanto Isso na Sala da Justiça 2026: Heróis invadem Olinda em encontro épico" loading="lazy"><span class="tag3 ">Mundo dos Otakus</span></button><button type="button" class="clip" style="--h:196px" data-u="https://www.olinda.pe.gov.br/sala-de-justica-reune-super-herois-apos-dois-anos-de-saudade/" data-i="assets/clip/m-12.webp" data-t="Prefeitura de Olinda · Sala de Justiça reúne super-heróis após dois anos de saudade (edição 2023)"><img src="assets/clip/m-12.webp" alt="Prefeitura de Olinda: Sala de Justiça reúne super-heróis após dois anos de saudade (edição 2023)" loading="lazy"><span class="tag3 ">Prefeitura de Olinda</span></button><button type="button" class="clip" style="--h:196px" data-u="https://www.instagram.com/p/DUKHvReEYlI/" data-i="assets/clip/p-01.webp" data-t="@caetanoveloso · Enquanto isso na Sala da Justiça… o festival de Recife me recebe de Capitão Marvel!"><img src="assets/clip/p-01.webp" alt="@caetanoveloso: Enquanto isso na Sala da Justiça… o festival de Recife me recebe de Capitão Marvel!" loading="lazy"><span class="tag3 post">@caetanoveloso</span></button><button type="button" class="clip" style="--h:196px" data-u="https://www.instagram.com/reel/DUKYycljr9P/" data-i="assets/clip/p-02.webp" data-t="@saladajustica · Do alto, a gente vê: Caetano, a música e um mar de gente vibrando no mesmo coração."><img src="assets/clip/p-02.webp" alt="@saladajustica: Do alto, a gente vê: Caetano, a música e um mar de gente vibrando no mesmo coração." loading="lazy"><span class="tag3 post">@saladajustica</span></button><button type="button" class="clip" style="--h:196px" data-u="https://www.instagram.com/reel/DUIx-7TDRYp/" data-i="assets/clip/p-03.webp" data-t="@saladajustica · É HOJE. Um line-up que vocês tanto pediram e que dispensa legenda."><img src="assets/clip/p-03.webp" alt="@saladajustica: É HOJE. Um line-up que vocês tanto pediram e que dispensa legenda." loading="lazy"><span class="tag3 post">@saladajustica</span></button><button type="button" class="clip" style="--h:196px" data-u="https://www.instagram.com/reel/DUEX2PJkntH/" data-i="assets/clip/p-04.webp" data-t="@caetanoveloso · Fantasias definidas. É pro time todo, hein?! Dia 30 de janeiro, na Sala da Justiça"><img src="assets/clip/p-04.webp" alt="@caetanoveloso: Fantasias definidas. É pro time todo, hein?! Dia 30 de janeiro, na Sala da Justiça" loading="lazy"><span class="tag3 post">@caetanoveloso</span></button><button type="button" class="clip" style="--h:196px" data-u="https://www.instagram.com/reel/DUrFGlFji7V/" data-i="assets/clip/p-05.webp" data-t="@shell.osmo · Restaurando as cores do estandarte do bloco Enquanto Isso na Sala da Justiça."><img src="assets/clip/p-05.webp" alt="@shell.osmo: Restaurando as cores do estandarte do bloco Enquanto Isso na Sala da Justiça." loading="lazy"><span class="tag3 post">@shell.osmo</span></button><button type="button" class="clip" style="--h:196px" data-u="https://www.instagram.com/reel/DU8ZajWDcGE/" data-i="assets/clip/p-06.webp" data-t="@saladajustica · #tbt que carnaval foi esse meus heróis??? Olinda se transformou num multiverso"><img src="assets/clip/p-06.webp" alt="@saladajustica: #tbt que carnaval foi esse meus heróis??? Olinda se transformou num multiverso" loading="lazy"><span class="tag3 post">@saladajustica</span></button><button type="button" class="clip" style="--h:196px" data-u="https://www.instagram.com/reel/DUJzAyRAUo0/" data-i="assets/clip/p-07.webp" data-t="@manifestoambiental · Os heróis de verdade se importam com o planeta: a Sala da Justiça mais sustentável"><img src="assets/clip/p-07.webp" alt="@manifestoambiental: Os heróis de verdade se importam com o planeta: a Sala da Justiça mais sustentável" loading="lazy"><span class="tag3 post">@manifestoambiental</span></button><button type="button" class="clip" style="--h:196px" data-u="https://www.youtube.com/watch?v=e54jfHJ3FKY" data-i="assets/clip/y-05.webp" data-t="YouTube · Robocop nas ladeiras de Olinda (Enquanto Isso na Sala de Justiça) - Carnaval 2024"><img src="assets/clip/y-05.webp" alt="YouTube: Robocop nas ladeiras de Olinda (Enquanto Isso na Sala de Justiça) - Carnaval 2024" loading="lazy"><span class="tag3 video">YouTube</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:196px" data-u="https://www.folhape.com.br/noticias/enquanto-isso-na-sala-da-justica-2026-bloco-promove-encontro-de/468021/" data-i="assets/clip/m-07.webp" data-t="Folha de Pernambuco · &quot;Enquanto Isso na Sala da Justiça&quot; 2026: bloco promove encontro de heróis, em Olinda"><img src="assets/clip/m-07.webp" alt="Folha de Pernambuco: &quot;Enquanto Isso na Sala da Justiça&quot; 2026: bloco promove encontro de heróis, em Olinda" loading="lazy"><span class="tag3 ">Folha de Pernambuco</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:196px" data-u="https://www.diariodepernambuco.com.br/carnaval/2026/02/11707756-super-herois-e-viloes-percorrem-ladeiras-com-o-enquanto-isso-na-sala-da-justica.html" data-i="assets/clip/m-08.webp" data-t="Diario de Pernambuco · Super-heróis e vilões percorrem ladeiras com o Enquanto isso na Sala da Justiça"><img src="assets/clip/m-08.webp" alt="Diario de Pernambuco: Super-heróis e vilões percorrem ladeiras com o Enquanto isso na Sala da Justiça" loading="lazy"><span class="tag3 ">Diario de Pernambuco</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:196px" data-u="https://www.terra.com.br/diversao/carnaval/enquanto-isso-na-sala-da-justica-em-olinda-faz-parte-da-historia-dos-folioes,a53719c9def725e14326169589bc3876tpes1tnt.html" data-i="assets/clip/m-09.webp" data-t="Terra · &#x27;Enquanto Isso na Sala da Justiça&#x27;, em Olinda, faz parte da história dos foliões"><img src="assets/clip/m-09.webp" alt="Terra: &#x27;Enquanto Isso na Sala da Justiça&#x27;, em Olinda, faz parte da história dos foliões" loading="lazy"><span class="tag3 ">Terra</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:196px" data-u="https://www.diariodepernambuco.com.br/carnaval/2026/02/11707764-conheca-a-historia-do-homem-aranha-que-e-atracao-em-olinda-ha-16-anos.html" data-i="assets/clip/m-10.webp" data-t="Diario de Pernambuco · Conheça a história do Homem-Aranha que é atração em Olinda há 16 anos"><img src="assets/clip/m-10.webp" alt="Diario de Pernambuco: Conheça a história do Homem-Aranha que é atração em Olinda há 16 anos" loading="lazy"><span class="tag3 ">Diario de Pernambuco</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:196px" data-u="https://www.mundodosotakus.com.br/2026/02/enquanto-isso-sala-justica-2026-olinda-herois-carnaval.html" data-i="assets/clip/m-11.webp" data-t="Mundo dos Otakus · Enquanto Isso na Sala da Justiça 2026: Heróis invadem Olinda em encontro épico"><img src="assets/clip/m-11.webp" alt="Mundo dos Otakus: Enquanto Isso na Sala da Justiça 2026: Heróis invadem Olinda em encontro épico" loading="lazy"><span class="tag3 ">Mundo dos Otakus</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:196px" data-u="https://www.olinda.pe.gov.br/sala-de-justica-reune-super-herois-apos-dois-anos-de-saudade/" data-i="assets/clip/m-12.webp" data-t="Prefeitura de Olinda · Sala de Justiça reúne super-heróis após dois anos de saudade (edição 2023)"><img src="assets/clip/m-12.webp" alt="Prefeitura de Olinda: Sala de Justiça reúne super-heróis após dois anos de saudade (edição 2023)" loading="lazy"><span class="tag3 ">Prefeitura de Olinda</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:196px" data-u="https://www.instagram.com/p/DUKHvReEYlI/" data-i="assets/clip/p-01.webp" data-t="@caetanoveloso · Enquanto isso na Sala da Justiça… o festival de Recife me recebe de Capitão Marvel!"><img src="assets/clip/p-01.webp" alt="@caetanoveloso: Enquanto isso na Sala da Justiça… o festival de Recife me recebe de Capitão Marvel!" loading="lazy"><span class="tag3 post">@caetanoveloso</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:196px" data-u="https://www.instagram.com/reel/DUKYycljr9P/" data-i="assets/clip/p-02.webp" data-t="@saladajustica · Do alto, a gente vê: Caetano, a música e um mar de gente vibrando no mesmo coração."><img src="assets/clip/p-02.webp" alt="@saladajustica: Do alto, a gente vê: Caetano, a música e um mar de gente vibrando no mesmo coração." loading="lazy"><span class="tag3 post">@saladajustica</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:196px" data-u="https://www.instagram.com/reel/DUIx-7TDRYp/" data-i="assets/clip/p-03.webp" data-t="@saladajustica · É HOJE. Um line-up que vocês tanto pediram e que dispensa legenda."><img src="assets/clip/p-03.webp" alt="@saladajustica: É HOJE. Um line-up que vocês tanto pediram e que dispensa legenda." loading="lazy"><span class="tag3 post">@saladajustica</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:196px" data-u="https://www.instagram.com/reel/DUEX2PJkntH/" data-i="assets/clip/p-04.webp" data-t="@caetanoveloso · Fantasias definidas. É pro time todo, hein?! Dia 30 de janeiro, na Sala da Justiça"><img src="assets/clip/p-04.webp" alt="@caetanoveloso: Fantasias definidas. É pro time todo, hein?! Dia 30 de janeiro, na Sala da Justiça" loading="lazy"><span class="tag3 post">@caetanoveloso</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:196px" data-u="https://www.instagram.com/reel/DUrFGlFji7V/" data-i="assets/clip/p-05.webp" data-t="@shell.osmo · Restaurando as cores do estandarte do bloco Enquanto Isso na Sala da Justiça."><img src="assets/clip/p-05.webp" alt="@shell.osmo: Restaurando as cores do estandarte do bloco Enquanto Isso na Sala da Justiça." loading="lazy"><span class="tag3 post">@shell.osmo</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:196px" data-u="https://www.instagram.com/reel/DU8ZajWDcGE/" data-i="assets/clip/p-06.webp" data-t="@saladajustica · #tbt que carnaval foi esse meus heróis??? Olinda se transformou num multiverso"><img src="assets/clip/p-06.webp" alt="@saladajustica: #tbt que carnaval foi esse meus heróis??? Olinda se transformou num multiverso" loading="lazy"><span class="tag3 post">@saladajustica</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:196px" data-u="https://www.instagram.com/reel/DUJzAyRAUo0/" data-i="assets/clip/p-07.webp" data-t="@manifestoambiental · Os heróis de verdade se importam com o planeta: a Sala da Justiça mais sustentável"><img src="assets/clip/p-07.webp" alt="@manifestoambiental: Os heróis de verdade se importam com o planeta: a Sala da Justiça mais sustentável" loading="lazy"><span class="tag3 post">@manifestoambiental</span></button><button aria-hidden="true" tabindex="-1" type="button" class="clip" style="--h:196px" data-u="https://www.youtube.com/watch?v=e54jfHJ3FKY" data-i="assets/clip/y-05.webp" data-t="YouTube · Robocop nas ladeiras de Olinda (Enquanto Isso na Sala de Justiça) - Carnaval 2024"><img src="assets/clip/y-05.webp" alt="YouTube: Robocop nas ladeiras de Olinda (Enquanto Isso na Sala de Justiça) - Carnaval 2024" loading="lazy"><span class="tag3 video">YouTube</span></button></div></div></div>
+</section>
+
+<!-- 18 · corridas -->
+<section class="s" data-chap="05 · Oportunidades" aria-label="Corridas">
+  <div class="box">
+    <p class="k" data-a="up">Oportunidades · pré-carnaval</p>
+    <h2 class="t t-s" data-a="mask"><span class="m"><span>As corridas <span class="y">que abrem a festa</span></span></span></h2>
+    <div class="cards2" data-a="kids" data-d=".4">
+      <article class="op"><div class="ph"><img src="assets/real/op-corrida-bonecos-01.webp" alt="Bonecos gigantes numerados na Corrida dos Bonecos de Olinda"><span class="cr">Passarinho · CC BY 2.0</span></div>
+        <div class="bd"><span class="city">Olinda</span><h3>Corrida dos Bonecos Gigantes</h3><p>Bonequeiros descem a ladeira com bonecos gigantes. Gratuito, familiar e visual: boneco de celebridade vira post.</p>
+        <div class="meta"><span><b>Quando</b> sáb 30/01/2027, 9h30</span><span><b>Público</b> 200+ bonecos em 2026</span><span><b>Cota</b> R$ 50 a 150 mil (estimativa)</span></div></div></article>
+      <article class="op"><div class="ph type"><div>5 km<br>10 km<small>4ª edição · Av. Guararapes</small></div></div>
+        <div class="bd"><span class="city">Recife</span><h3>Corrida do Galo da Madrugada</h3><p>Prova com fantasia, trios e orquestras de frevo uma semana antes do Galo. Corredor e folião no mesmo ato, já com o celular na mão.</p>
+        <div class="meta"><span><b>Quando</b> dom 24/01/2027, 5h30</span><span><b>Público</b> meta de 10 mil inscritos e 30 mil pessoas</span><span><b>Cota</b> sem valor público</span></div></div></article>
+    </div>
+  </div>
+</section>
+
+<!-- 19 · patusco e bacalhau -->
+<section class="s" data-chap="05 · Oportunidades" aria-label="Patusco e Bacalhau do Batata">
+  <div class="box">
+    <p class="k" data-a="up">Oportunidades · Olinda</p>
+    <h2 class="t t-s" data-a="mask"><span class="m"><span>Bloco de raiz, <span class="y">público de verdade</span></span></span></h2>
+    <div class="trio3" data-a="kids" data-d=".4">
+      <article class="op"><div class="ph"><img src="assets/real/op-patusco-01.webp" alt="Bateria do Patusco tomando a ladeira em Olinda"><span class="cr">Marcelo Soares · CC BY 2.0</span></div>
+        <div class="bd"><span class="city">Olinda · desde 1962</span><h3>Patusco</h3><p>Samba e frevo com bateria de 225 percussionistas. O ensaio aberto antes do carnaval é janela barata para testar ação e gerar conteúdo.</p>
+        <div class="meta"><span><b>Quando</b> 07 e 09/02/2027</span><span><b>Cota</b> R$ 30 a 80 mil (estimativa)</span></div></div></article>
+      <article class="op"><div class="ph"><img src="assets/real/op-bacalhau-batata-01.webp" alt="Estandarte do Bacalhau do Batata em Olinda"><span class="cr">Williams Aguiar · CC BY 2.0</span></div>
+        <div class="bd"><span class="city">Olinda · Quarta de Cinzas</span><h3>Bacalhau do Batata</h3><p>Criado para quem trabalhou no carnaval poder brincar: o trabalhador e o ambulante, o público mais próximo de quem usa Cofrinho.</p>
+        <div class="meta"><span><b>Quando</b> 10/02/2027, manhã</span><span><b>Cota</b> R$ 15 a 40 mil (estimativa)</span></div></div></article>
+      <div class="rule"><small>Bloco com camisa ou adereço da 99Pay?</small><b>Pode, com condições.</b><p>Nenhuma regra de Recife ou Olinda proíbe marca de terceiro em camisa, adereço ou estandarte de agremiação apoiada; a Esportes da Sorte já apoia mais de 40 agremiações em Olinda assim. A restrição está na rua: faixa, som, estrutura e brinde em massa. Contrato direto com a agremiação e validação do jurídico antes de fechar.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 20 · outros blocos -->
+<section class="s" data-chap="05 · Oportunidades" aria-label="Outros blocos">
+  <img class="bg zoom" src="assets/real/olinda-04.webp" alt="">
+  <div class="sh sh-xx"></div>
+  <div class="box">
+    <p class="k" data-a="up">Oportunidades · outros blocos</p>
+    <h2 class="t t-s" data-a="mask"><span class="m"><span>Para todos, <span class="y">de todos os jeitos</span></span></span></h2>
+    <div class="g4b" data-a="kids" data-d=".4">
+      <article><strong>600 mil+</strong><small>por ano, segundo a organização</small><h3>Virgens do Bairro Novo</h3><p>Desde 1953, foliões de todos os gêneros desfilam de mulher atrás de 12 trios. O maior alcance dos extras.</p><span class="when">dom 31/01/2027 · R$ 150 mil a 1 mi (estimativa)</span></article>
+      <article><strong>30 mil</strong><small>expectativa em 2026</small><h3>Elefante de Olinda</h3><p>Clube de 1952, Patrimônio Vivo de Pernambuco, com boneco gigante e frevo: reúne todas as idades.</p><span class="when">dom 07/02/2027, 19h · R$ 40 a 120 mil (estimativa)</span></article>
+      <article><strong>10 mil+</strong><small>no 79º desfile, em 2026</small><h3>Pitombeira dos Quatro Cantos</h3><p>Troça de 1947 de camisa amarela única, que iguala todo mundo e virou febre depois de O Agente Secreto.</p><span class="when">seg 08/02/2027, 10h · R$ 40 a 120 mil (estimativa)</span></article>
+      <article><strong>LGBTQIA+</strong><small>troça sapatão, aberta a todos</small><h3>Quem Cola Entra</h3><p>Espaço de acolhimento e visibilidade lésbica: liberdade para ocupar a rua e filmar sem medo.</p><span class="when">ter 09/02/2027 · R$ 10 a 30 mil (estimativa)</span></article>
+    </div>
+  </div>
+  <span class="cr">Prefeitura de Olinda · CC BY 4.0</span>
+</section>
+
+<!-- 21 · cap 06 ativação -->
+<section class="s" data-kind="chap" data-num="06" data-chap="06 · Ativação" aria-label="Ativação exemplo">
+  <video class="bgv zoom" muted loop playsinline preload="auto" poster="assets/cena-herois.webp"><source src="assets/v/video-herois.mp4" type="video/mp4"></video>
+  <div class="sh sh-l"></div><div class="sh sh-b" style="opacity:.6"></div>
+  <div class="bl" style="width:1300px">
+    <p class="k" data-a="up" data-d=".2"><b>06</b> Ativação · exemplo</p>
+    <h2 class="t t-l" data-a="mask" data-d=".3"><span class="m"><span>Guarda de</span></span><span class="m"><span class="y">herói</span></span></h2>
+    <ol class="steps" data-a="kids" data-d=".8">
+      <li><i>1</i>Na prévia da Sala da Justiça, um ponto 99Pay com cenário de herói para a foto.</li>
+      <li><i>2</i>O folião cria o Cofrinho no app e leva a bolsa estanque: celular protegido para o resto da folia.</li>
+      <li><i>3</i>A foto sai com a marca no cenário e circula nos perfis de quem foi.</li>
+    </ol>
+    <p class="disc" data-a="fade" data-d="1.4"><b>Exemplo ilustrativo.</b> Depois do direcionamento conceitual e conhecendo a identidade da campanha, vamos construir as ações e ideias especiais que posicionam a marca e o produto no carnaval.</p>
+  </div>
+</section>
+
+<!-- 22 · cap 07 potencializar -->
+<section class="s" data-kind="chap" data-num="07" data-chap="07 · Potencializar" aria-label="Potencializar a presença">
+  <div class="box">
+    <p class="k" data-a="up" data-d=".2"><b>07</b> Potencializar a presença</p>
+    <h2 class="t t-m" data-a="mask" data-d=".3"><span class="m"><span>Em todos os pontos <span class="y">do carnaval</span></span></span></h2>
+    <div class="pot" data-a="kids" data-d=".7">
+      <article><img src="assets/cena-motorista.webp" alt="Motorista de aplicativo com kit da 99 no interior do carro"><div class="in"><small>Carros da 99</small><h3>O carro vira ponto de contato</h3><p>No carnaval, a corrida por aplicativo cresce e o carro chega a todos os polos. Kit para o motorista usar no interior do carro e informar o passageiro no momento certo.</p></div></article>
+      <article><img src="assets/cena-promotor.webp" alt="Influenciadora gravando conteúdo no carnaval"><div class="in"><small>Plataforma de influenciadores</small><h3>Tudo que a marca fizer, visto</h3><p>Ações integradas com influenciadores para dar visibilidade a tudo que for produzido no carnaval. A estratégia depende dos direcionais e da identidade da campanha.</p></div></article>
+    </div>
+  </div>
+</section>
+
+<!-- 23 · cap 08 99 influencers -->
+<section class="s" data-kind="chap" data-num="08" data-chap="08 · 99 Influencers" aria-label="99 Influencers">
+  <div class="inf-l">
+    <p class="k" data-a="up" data-d=".2"><b>08</b> Ideia independente e ajustável à campanha</p>
+    <h2 class="t" data-a="mask" data-d=".3"><span class="m"><span class="n99">99</span></span><span class="m"><span>Influencers</span></span></h2>
+    <p class="sub" data-a="up" data-d=".9">Um bloco com 99 influenciadores, de abadá especial 99, curtindo e postando tudo.</p>
+  </div>
+  <figure class="inf-v" data-a="rise" data-d=".4" style="margin:0"><video class="zoom" muted loop playsinline preload="auto" poster="assets/inf/cena-inf.webp"><source src="assets/inf/video-inf.mp4" type="video/mp4"></video><span class="live">ao vivo</span></figure>
+</section>
+
+<!-- 24 · abadá -->
+<section class="s" data-chap="08 · 99 Influencers" aria-label="Abadá especial 99">
+  <div class="abada" data-a="wipe"><img class="zoom" src="assets/inf/abada-99.webp" alt="Abadá especial amarelo de lantejoulas com a marca 99Pay"></div>
+  <div class="ab-r">
+    <p class="k" data-a="up" data-d=".3">99 Influencers · o bloco</p>
+    <h2 class="t t-m" data-a="mask" data-d=".4"><span class="m"><span>Abadá</span></span><span class="m"><span class="y">especial 99</span></span></h2>
+    <ul class="pts" data-a="kids" data-d=".8">
+      <li><b>99</b><span>nano e micro influenciadores, de todos os estilos</span></li>
+      <li><b>1</b><span>abadá especial que vira a cara do bloco</span></li>
+      <li><b>+</b><span>saem juntos e se espalham pelos pontos do carnaval</span></li>
+      <li><b>24h</b><span>postando tudo em tempo real, cada um para o seu público</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 25 · brindes -->
+<section class="s" data-kind="chap" data-num="09" data-chap="09 · Brindes" aria-label="Brindes">
+  <div class="box" style="top:120px">
+    <p class="k" data-a="up" data-d=".2"><b>09</b> Brindes</p>
+    <h2 class="t t-m" data-a="mask" data-d=".3"><span class="m"><span>Cinco brindes, <span class="y">uma diretriz</span></span></span></h2>
+    <div class="gifts" data-a="kids" data-d=".6">
+      <section class="grp"><header><b>Segurança e praticidade</b><span>Celular e cartão protegidos no meio da folia.</span></header><div>
+        <article class="gift"><figure><img src="assets/brindes/bolsa-estanque.webp" alt="Bolsa estanque para celular"><span class="tag">Já produzido para a 99Pay · arte nova</span></figure><div><h3>Bolsa estanque</h3><p>Protege da água, do suor e da multidão.</p></div></article>
+        <article class="gift"><figure><img src="assets/brindes/porta-cartao.webp" alt="Porta-cartão adesivo"></figure><div><h3>Porta-cartão adesivo</h3><p>Cartão e documento presos no celular.</p></div></article>
+      </div></section>
+      <section class="grp"><header><b>Visibilidade e função</b><span>A marca na mão, o tempo todo.</span></header><div>
+        <article class="gift"><figure><img src="assets/brindes/porta-latinha.webp" alt="Porta-latinha com cordão"></figure><div><h3>Porta-latinha com cordão</h3><p>Mãos livres e bebida gelada.</p></div></article>
+      </div></section>
+      <section class="grp"><header><b>Visibilidade e proteção</b><span>Sol de fevereiro e marca na foto.</span></header><div>
+        <article class="gift"><figure><img src="assets/brindes/bandana.webp" alt="Bandana"><span class="tag">Já produzido para a 99Pay · arte nova</span></figure><div><h3>Bandana</h3><p>Vira acessório da fantasia.</p></div></article>
+        <article class="gift"><figure><img src="assets/brindes/viseira.webp" alt="Viseira"></figure><div><h3>Viseira</h3><p>Protege do sol e aparece em toda foto.</p></div></article>
+      </div></section>
+    </div>
+  </div>
+</section>
+
+<!-- 26 · diretriz -->
+<section class="s solar-s" data-kind="chap" data-num="99" data-chap="Diretriz" data-solar aria-label="Democrático">
+  <div class="bl">
+    <p class="k" data-a="up" data-d=".2">A diretriz de tudo</p>
+    <h2 class="t t-xl" data-a="mask" data-d=".3"><span class="m"><span>Democrático.</span></span></h2>
+    <p class="lead" data-a="up" data-d=".8">Os brindes seguem a mesma diretriz de tudo: ser democrático. São viáveis e se adequam a qualquer direcionamento de campanha.</p>
+    <p class="lead" data-a="up" data-d="1">O estudo do conceito e dos direcionamentos criativos pode trazer novos brindes e ideias para complementar o que construímos.</p>
+  </div>
+</section>
+
+<!-- 28 · encerramento -->
+<section class="s inst-s" data-kind="inst" aria-label="Encerramento">
+  <img class="encerra-topo" src="assets/inst/encerramento-topo.webp" alt="dot. promo · sua agência de live marketing">
+  <div data-a="kids" data-d=".4">
+  <div class="contato" style="--x:184px;--y:690px;--w:420px"><b>Recife</b><strong>+55 81 98129-6150</strong><p>R. Padre Carapuceiro, n. 858, Sala 1002.</p><p>Torre Cícero Dias, Boa Viagem, Recife-PE.</p><p>CEP: 51020-280</p></div>
+  <div class="contato" style="--x:184px;--y:858px;--w:420px"><b>Fortaleza</b><strong>+55 85 3051-4080</strong><p>R. Dr. Gilberto Studart, 55, Sala 1717.</p><p>Torre Norte - Duets Office Towers</p><p>Bairro Cocó - Fortaleza/CE</p><p>CEP: 60.192-105</p></div>
+  <div class="contato" style="--x:606px;--y:878px;--w:460px"><b>São Paulo</b><strong>+55 11 96855.8508</strong><p>Rua das Olimpíadas, 205, sala 406.</p><p>Edifício Continental Square</p><p>Vila Olímpia - São Paulo/SP - 04.551-000</p></div>
+  </div>
+  <i class="encerra-divisor"></i>
+  <div data-a="kids" data-d=".6">
+  <div class="rede" style="--y:695px"><i><img src="assets/inst/social-instagram.png" alt=""></i><span>@dotpromo</span></div>
+  <div class="rede" style="--y:762px"><i><img src="assets/inst/social-facebook.png" alt=""></i><span>/dotpromo</span></div>
+  <div class="rede" style="--y:830px"><i><img src="assets/inst/social-youtube.png" alt=""></i><span>/dotassessoriapromo</span></div>
+  <div class="rede" style="--y:897px"><i><img src="assets/inst/social-linkedin.png" alt=""></i><span>/dotpromo1</span></div>
+  <div class="rede" style="--y:964px"><i><img src="assets/inst/social-www.png" alt=""></i><span>/dotpromo.com.br</span></div>
+  </div>
+</section>
+
+<div id="curtain" aria-hidden="true"><b></b></div>
+<div id="chrome">
+  <div id="brand"><span class="dot-chip"><svg  role="img" aria-label="dot." viewBox="0 0 80.999 33.7711" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="dot">
+<path d="M77.4648 26.5327C75.5097 26.5327 73.9284 28.1246 73.9284 30.0873C73.9284 32.0501 75.5074 33.6396 77.4648 33.6396C79.4223 33.6396 80.999 32.0501 80.999 30.0873C80.999 28.1246 79.4199 26.5327 77.4648 26.5327Z" fill="#EDF2F5"/>
+<path d="M37.3258 33.6889C29.9655 33.6889 23.9788 27.6714 23.9788 20.2734C23.9788 12.8755 29.9655 6.85798 37.3258 6.85798C44.6861 6.85798 50.6729 12.8755 50.6729 20.2734C50.6729 27.6714 44.6861 33.6889 37.3258 33.6889ZM37.3258 14.2748C34.0346 14.2748 31.3577 16.9654 31.3577 20.2734C31.3577 23.5815 34.0346 26.2721 37.3258 26.2721C40.617 26.2721 43.2939 23.5815 43.2939 20.2734C43.2939 16.9654 40.617 14.2748 37.3258 14.2748Z" fill="#EDF2F5"/>
+<path d="M13.3471 33.6889C5.98679 33.6889 0 27.6714 0 20.2734C0 12.8755 5.98679 6.85798 13.3471 6.85798C20.7073 6.85798 26.6941 12.8755 26.6941 20.2734C26.6941 27.6714 20.7073 33.6889 13.3471 33.6889ZM13.3471 14.2748C10.0558 14.2748 7.37896 16.9654 7.37896 20.2734C7.37896 23.5815 10.0558 26.2721 13.3471 26.2721C16.6383 26.2721 19.3152 23.5815 19.3152 20.2734C19.3152 16.9654 16.6383 14.2748 13.3471 14.2748Z" fill="#EDF2F5"/>
+<path d="M61.2087 18.4797H53.3906C51.3538 18.4797 49.7023 16.8198 49.7023 14.7725C49.7023 12.7252 51.3538 11.0653 53.3906 11.0653H61.2087C63.2456 11.0653 64.897 12.7252 64.897 14.7725C64.897 16.8198 63.2456 18.4797 61.2087 18.4797Z" fill="#EDF2F5"/>
+<path d="M22.9633 18.4844C20.9265 18.4844 19.2727 16.8245 19.2727 14.7772V3.84338C19.2727 1.79608 20.9242 0.133823 22.9633 0.133823C25.0025 0.133823 26.6517 1.79373 26.6517 3.84338V14.7772C26.6517 16.8245 25.0002 18.4844 22.9633 18.4844Z" fill="#EDF2F5"/>
+<path d="M61.4177 33.7711C54.02 33.7711 48.0005 27.7207 48.0005 20.2852V3.68843C48.0005 1.65052 49.6426 0 51.6701 0C53.6977 0 55.3398 1.65052 55.3398 3.68843V20.2852C55.3398 23.6543 58.0657 26.3942 61.4177 26.3942C64.7696 26.3942 67.4956 23.6543 67.4956 20.2852V17.8341C67.4956 15.7961 69.1377 14.1456 71.1652 14.1456C73.1927 14.1456 74.8348 15.7961 74.8348 17.8341V20.2852C74.8348 27.7207 68.8153 33.7711 61.4177 33.7711Z" fill="#EDF2F5"/>
+<path d="M59.7218 4.88816C58.395 4.88816 57.3159 3.80581 57.3159 2.47225C57.3159 1.13869 58.3974 0.056343 59.7218 0.056343C61.0462 0.056343 62.1254 1.13869 62.1254 2.47225C62.1254 3.80581 61.0462 4.88816 59.7218 4.88816ZM59.7218 0.462516C58.6169 0.462516 57.7223 1.36408 57.7223 2.47225C57.7223 3.58042 58.6193 4.48199 59.7218 4.48199C60.8243 4.48199 61.7213 3.58277 61.7213 2.47225C61.7213 1.36173 60.8243 0.462516 59.7218 0.462516Z" fill="#EDF2F5"/>
+<path d="M60.3411 1.28425C60.4322 1.32416 60.5092 1.38051 60.577 1.45799C60.6284 1.52138 60.6704 1.59181 60.7008 1.66929C60.7312 1.74677 60.7498 1.83599 60.7498 1.93225C60.7498 2.05199 60.7195 2.16938 60.6587 2.28207C60.598 2.39712 60.4976 2.48164 60.3621 2.52625C60.4765 2.5732 60.5583 2.63894 60.605 2.72581C60.6541 2.81033 60.6774 2.94181 60.6774 3.1179V3.28459C60.6774 3.39964 60.6821 3.47712 60.6914 3.51703C60.7055 3.58277 60.7382 3.62972 60.7849 3.66025V3.72129H60.2126C60.1962 3.66729 60.1869 3.62268 60.1776 3.58981C60.1635 3.51938 60.1565 3.44659 60.1565 3.37381L60.1519 3.13903C60.1519 2.97938 60.1262 2.87373 60.0701 2.81973C60.0187 2.76573 59.9183 2.7399 59.7735 2.7399H59.2642V3.72129H58.755V1.21851H59.9486C60.1192 1.22321 60.25 1.24434 60.3411 1.28425ZM59.2642 1.65521V2.32903H59.8272C59.9393 2.32903 60.0234 2.31494 60.0771 2.28912C60.1752 2.23981 60.2243 2.1459 60.2243 2.00738C60.2243 1.85477 60.1752 1.75147 60.0818 1.69981C60.0304 1.66929 59.9486 1.65521 59.8412 1.65521H59.2666H59.2642Z" fill="#EDF2F5"/>
+</g>
+</svg>
+</span><span class="x">×</span><img src="assets/logo-99pay-branco.png" alt="99Pay"></div>
+  <div id="chap"></div>
+  <button id="fs" type="button" aria-label="Tela cheia">⤢ tela cheia</button>
+  <div id="count"></div>
+  <div id="bar"><i></i></div>
+</div>
+</div>
+
+<div id="start" role="dialog" aria-label="Iniciar apresentação">
+  <button type="button" id="go">▶&nbsp; Apresentar em tela cheia</button>
+  <p>Setas ou clique para avançar · F alterna a tela cheia</p>
+</div>
+<dialog id="lb"><img id="lbImg" alt=""><p><span id="lbT"></span><a id="lbA" target="_blank" rel="noopener">abrir fonte ↗</a></p><button id="lbX" type="button" aria-label="Fechar">fechar ✕</button></dialog>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+(function(){
+const stage=document.getElementById("stage"), S=[...stage.querySelectorAll(".s")], N=S.length;
+const curtain=document.getElementById("curtain"), body=document.body;
+const prova=/prova/.test(location.search), rm=prova||matchMedia("(prefers-reduced-motion: reduce)").matches||!window.gsap;
+let cur=-1, busy=null;
+
+function fit(){const k=Math.min(innerWidth/1920,innerHeight/1080);stage.style.transform=`translate(-50%,-50%) scale(${k})`}
+addEventListener("resize",fit);fit();
+
+// contador: anima o primeiro número do texto, mantendo prefixo e sufixo
+function count(el,tl,d){
+  const txt=el.dataset.txt||(el.dataset.txt=el.textContent), m=txt.match(/\d+(?:,\d+)?/);
+  if(!m) return;
+  const dec=(m[0].split(",")[1]||"").length, to=parseFloat(m[0].replace(",",".")), pre=txt.slice(0,m.index), suf=txt.slice(m.index+m[0].length), o={v:0};
+  tl.to(o,{v:to,duration:1.6,ease:"power3.out",onUpdate:()=>{el.textContent=pre+o.v.toFixed(dec).replace(".",",")+suf},onComplete:()=>{el.textContent=txt}},d);
+}
+function reset(s){
+  s._tl&&s._tl.kill(); s._z&&s._z.kill();
+  s.querySelectorAll("[data-a],[data-a] > *,.m > span,.zoom").forEach(e=>gsap.set(e,{clearProps:"transform,opacity,visibility,clipPath"}));
+  s.querySelectorAll("[data-count]").forEach(e=>{if(e.dataset.txt)e.textContent=e.dataset.txt});
+}
+function enter(s){
+  reset(s);
+  const tl=gsap.timeline(); let t=0;
+  s.querySelectorAll("[data-a]").forEach(el=>{
+    const a=el.dataset.a, d=el.dataset.d!=null?+el.dataset.d:(t+=.14);
+    if(a==="mask") tl.from(el.querySelectorAll(".m>span"),{yPercent:112,duration:1.15,ease:"expo.out",stagger:.09},d);
+    else if(a==="up") tl.from(el,{y:46,autoAlpha:0,duration:.95,ease:"power3.out"},d);
+    else if(a==="fade") tl.from(el,{autoAlpha:0,duration:1.2,ease:"power2.out"},d);
+    else if(a==="wipe") tl.fromTo(el,{clipPath:"inset(0 100% 0 0)"},{clipPath:"inset(0 0% 0 0)",duration:1.2,ease:"expo.inOut"},d);
+    else if(a==="rise") tl.fromTo(el,{clipPath:"inset(100% 0 0 0)"},{clipPath:"inset(0% 0 0 0)",duration:1.15,ease:"expo.inOut"},d);
+    else if(a==="kids") tl.from(el.children,{y:60,autoAlpha:0,duration:.95,ease:"power3.out",stagger:.08},d);
+    else if(a==="pop") tl.from(el.children,{scale:.82,autoAlpha:0,duration:.8,ease:"back.out(1.5)",stagger:.06},d);
+  });
+  s.querySelectorAll("[data-count]").forEach((el,i)=>count(el,tl,.5+i*.08));
+  s._tl=tl;
+  const z=s.querySelectorAll(".zoom");
+  if(z.length) s._z=gsap.fromTo(z,{scale:1.16},{scale:1.02,duration:9,ease:"power2.out"});
+  return tl;
+}
+function media(n){
+  S.forEach((s,i)=>s.querySelectorAll("video").forEach(v=>{if(i===n){v.currentTime=0;v.play().catch(()=>{})}else v.pause()}));
+}
+function chrome(){
+  const s=S[cur];
+  body.classList.toggle("inst",s.dataset.kind==="inst");
+  body.classList.toggle("solar",s.hasAttribute("data-solar"));
+  document.getElementById("chap").textContent=s.dataset.chap||"";
+  document.getElementById("count").innerHTML=`<b>${String(cur+1).padStart(2,"0")}</b> / ${N}`;
+  document.querySelector("#bar i").style.width=((cur+1)/N*100)+"%";
+  history.replaceState(null,"","#"+(cur+1));
+}
+function go(n){
+  n=Math.max(0,Math.min(N-1,n)); if(n===cur) return;
+  if(busy) busy.progress(1);
+  const prev=S[cur], next=S[n], dir=n>cur?1:-1; cur=n;
+  chrome(); media(n);
+  S.forEach(s=>s.style.zIndex="");
+  next.style.zIndex=2; if(prev) prev.style.zIndex=1;
+  next.classList.add("on");
+  const done=()=>{if(prev&&prev!==S[cur]){prev.classList.remove("on");gsap.set(prev,{clearProps:"transform,opacity,clipPath"});reset(prev)} gsap.set(next,{clearProps:"clipPath"}); busy=null};
+  if(rm){if(prev)prev.classList.remove("on");if(window.gsap)gsap.globalTimeline.progress(1);return}
+  if(!prev){enter(next);return}
+  const tl=gsap.timeline({onComplete:done}); busy=tl;
+  const k=next.dataset.kind;
+  if(k==="chap"||k==="inst"){
+    const b=curtain.querySelector("b");
+    curtain.className=k==="inst"?"roxo":""; b.textContent=k==="inst"?"":(next.dataset.num||"");
+    next.classList.remove("on");
+    tl.set(curtain,{display:"grid"})
+      .fromTo(curtain,{clipPath:dir>0?"inset(100% 0 0 0)":"inset(0 0 100% 0)"},{clipPath:"inset(0% 0 0% 0)",duration:.62,ease:"expo.in"})
+      .fromTo(b,{yPercent:40,autoAlpha:0},{yPercent:0,autoAlpha:1,duration:.45,ease:"power3.out"},"-=.2")
+      .add(()=>{next.classList.add("on");prev.classList.remove("on");enter(next)},"+=.12")
+      .to(b,{yPercent:-30,autoAlpha:0,duration:.35,ease:"power2.in"})
+      .to(curtain,{clipPath:dir>0?"inset(0 0 100% 0)":"inset(100% 0 0 0)",duration:.85,ease:"expo.inOut"},"-=.2")
+      .set(curtain,{display:"none"});
+  }else{
+    tl.fromTo(next,{clipPath:dir>0?"inset(0 0 0 100%)":"inset(0 100% 0 0)"},{clipPath:"inset(0 0% 0 0%)",duration:1,ease:"expo.inOut"},0)
+      .to(prev,{x:dir>0?-300:300,scale:.94,autoAlpha:.25,duration:1,ease:"expo.inOut"},0)
+      .add(()=>enter(next),.3);
+  }
+}
+const next=()=>go(cur+1), back=()=>go(cur-1);
+let mt;addEventListener("mousemove",()=>{body.classList.add("mouse");clearTimeout(mt);mt=setTimeout(()=>body.classList.remove("mouse"),2200)});
+
+// tela cheia
+const fsOn=()=>document.fullscreenElement||document.webkitFullscreenElement;
+function toggleFs(){
+  const el=document.documentElement;
+  if(fsOn()) (document.exitFullscreen||document.webkitExitFullscreen).call(document);
+  else{const r=(el.requestFullscreen||el.webkitRequestFullscreen);if(r){try{const p=r.call(el);p&&p.catch&&p.catch(()=>{})}catch(e){}}}
+}
+document.getElementById("fs").addEventListener("click",e=>{e.stopPropagation();toggleFs()});
+
+// início
+const start=document.getElementById("start");
+function begin(fs){
+  if(!start.isConnected) return;
+  start.remove(); if(fs) toggleFs();
+  S[cur].querySelectorAll("video").forEach(v=>v.play().catch(()=>{}));
+}
+start.addEventListener("click",()=>begin(true));
+
+// navegação
+const lb=document.getElementById("lb");
+addEventListener("keydown",e=>{
+  if(lb.open) return;
+  if(start.isConnected){ if(["ArrowRight","ArrowLeft"," ","Enter","PageDown","PageUp","f","F"].includes(e.key)){e.preventDefault();begin(e.key==="Enter"||e.key==="f"||e.key==="F");} return; }
+  if(["ArrowRight","PageDown"," ","Enter","ArrowDown"].includes(e.key)){e.preventDefault();next()}
+  else if(["ArrowLeft","PageUp","Backspace","ArrowUp"].includes(e.key)){e.preventDefault();back()}
+  else if(e.key==="Home") go(0); else if(e.key==="End") go(N-1);
+  else if(e.key==="f"||e.key==="F") toggleFs();
+});
+stage.addEventListener("click",e=>{
+  if(start.isConnected) return;
+  const c=e.target.closest(".clip");
+  if(c){document.getElementById("lbImg").src=c.dataset.i;document.getElementById("lbT").textContent=c.dataset.t;document.getElementById("lbA").href=c.dataset.u||"#";lb.showModal();return}
+  if(e.target.closest("a,button")) return;
+  (e.clientX>innerWidth*.28?next:back)();
+});
+document.getElementById("lbX").onclick=()=>lb.close();
+lb.addEventListener("click",e=>{if(e.target===lb)lb.close()});
+let tx=null;
+addEventListener("touchstart",e=>{tx=e.touches[0].clientX},{passive:true});
+addEventListener("touchend",e=>{if(tx==null||start.isConnected)return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)(dx<0?next:back)();tx=null});
+
+const h=parseInt(location.hash.slice(1),10);
+go(h>=1&&h<=N?h-1:0);
+window.__deck={go:n=>go(n-1),N,begin};
+})();
+</script>
+</body>
+</html>
